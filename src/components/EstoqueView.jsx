@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { formatarPreco } from '../data/boutiqueData';
+import { buscarEstoque } from '../services/apiService';
 import './EstoqueView.css';
 
 export default function EstoqueView({ token, usuario }) {
@@ -11,16 +12,7 @@ export default function EstoqueView({ token, usuario }) {
     async function carregarEstoque() {
       try {
         setCarregando(true);
-        const res = await fetch('/api/estoque', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!res.ok) {
-          const errData = await res.json();
-          throw new Error(errData.erro || 'Falha ao carregar estoque.');
-        }
-
-        const data = await res.json();
+        const data = await buscarEstoque(token);
         setDados(data);
       } catch (err) {
         setErro(err.message);
@@ -29,10 +21,9 @@ export default function EstoqueView({ token, usuario }) {
       }
     }
 
-    if (token) {
-      carregarEstoque();
-    }
+    carregarEstoque();
   }, [token]);
+
 
   if (carregando) {
     return (

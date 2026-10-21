@@ -16,7 +16,9 @@ import {
   formatarPreco,
 } from './data/boutiqueData';
 import { responderPergunta } from './services/atendenteService';
+import { loginUsuario } from './services/authService';
 import './App.css';
+
 
 const STORAGE_CHAT = 'boutique_layani_chat';
 const STORAGE_USER = 'boutique_layani_user';
@@ -103,19 +105,14 @@ export default function App() {
 
   const handleLoginRapido = async (email, senha) => {
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, senha }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.erro);
+      const data = await loginUsuario(email, senha);
       handleSucessoLogin(data.usuario, data.token);
     } catch {
       setModoAuth('login');
       setModalAuth(true);
     }
   };
+
 
   const handleEnviarMensagem = (textoPergunta) => {
     const textoLimpo = textoPergunta.trim();

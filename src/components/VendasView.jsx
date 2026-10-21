@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { formatarPreco } from '../data/boutiqueData';
+import { buscarVendas } from '../services/apiService';
 import './VendasView.css';
 
 export default function VendasView({ token }) {
@@ -11,16 +12,7 @@ export default function VendasView({ token }) {
     async function carregarVendas() {
       try {
         setCarregando(true);
-        const res = await fetch('/api/vendas', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!res.ok) {
-          const errData = await res.json();
-          throw new Error(errData.erro || 'Falha ao carregar vendas.');
-        }
-
-        const data = await res.json();
+        const data = await buscarVendas(token);
         setDados(data);
       } catch (err) {
         setErro(err.message);
@@ -29,10 +21,9 @@ export default function VendasView({ token }) {
       }
     }
 
-    if (token) {
-      carregarVendas();
-    }
+    carregarVendas();
   }, [token]);
+
 
   if (carregando) {
     return (

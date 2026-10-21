@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { loginUsuario, cadastrarUsuario } from '../services/authService';
 import './AuthModal.css';
 
 export default function AuthModal({
@@ -26,22 +27,14 @@ export default function AuthModal({
     setCarregando(true);
 
     try {
-      const endpoint = modo === 'login' ? '/api/auth/login' : '/api/auth/register';
-      const body = modo === 'login' ? { email, senha } : { nome, email, senha };
-
-      const resposta = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-
-      const dados = await resposta.json();
-
-      if (!resposta.ok) {
-        throw new Error(dados.erro || 'Falha na autenticação');
+      let resultado;
+      if (modo === 'login') {
+        resultado = await loginUsuario(email, senha);
+      } else {
+        resultado = await cadastrarUsuario(nome, email, senha);
       }
 
-      onSucessoLogin(dados.usuario, dados.token);
+      onSucessoLogin(resultado.usuario, resultado.token);
       onFechar();
     } catch (err) {
       setErro(err.message || 'Erro ao conectar ao servidor');
@@ -49,6 +42,7 @@ export default function AuthModal({
       setCarregando(false);
     }
   };
+
 
   return (
     <div

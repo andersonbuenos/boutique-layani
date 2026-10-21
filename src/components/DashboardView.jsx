@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { formatarPreco } from '../data/boutiqueData';
+import { buscarDashboard } from '../services/apiService';
 import SecaoAlertasCriticos from './SecaoAlertasCriticos';
 import AmChartHistorico from './AmChartHistorico';
 import AmChartsMulti from './AmChartsMulti';
@@ -16,16 +17,7 @@ export default function DashboardView({ token }) {
     async function carregarDashboard() {
       try {
         setCarregando(true);
-        const res = await fetch('/api/dashboard', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!res.ok) {
-          const errData = await res.json();
-          throw new Error(errData.erro || 'Falha ao carregar dashboard analítico.');
-        }
-
-        const data = await res.json();
+        const data = await buscarDashboard(token);
         setDados(data);
       } catch (err) {
         setErro(err.message);
@@ -34,8 +26,9 @@ export default function DashboardView({ token }) {
       }
     }
 
-    if (token) carregarDashboard();
+    carregarDashboard();
   }, [token]);
+
 
   if (carregando) {
     return (
