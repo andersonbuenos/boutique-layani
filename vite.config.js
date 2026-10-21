@@ -5,6 +5,16 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+      '/api-docs': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+    },
     watch: {
       ignored: ['**/DOCS/**', '**/*.zip', '**/node_modules/**'],
     },
@@ -17,5 +27,6 @@ export default defineConfig({
     globals: true,
   },
 });
+
 
 

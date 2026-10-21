@@ -5,3 +5,6 @@ dist-ssr
 dev.log
 dev-err.log
 .DS_Store
+server.log
+server-err.log
+

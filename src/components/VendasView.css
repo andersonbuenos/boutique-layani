@@ -1,0 +1,40 @@
+.vendas-view-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.canal-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.canal-whatsapp {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.canal-chat-virtual {
+  background: #fdf2f8;
+  color: #9d174d;
+}
+
+.canal-loja-física {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.itens-lista-compacta {
+  list-style: none;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.valor-destaque {
+  font-size: 1rem;
+  color: var(--color-primary);
+}

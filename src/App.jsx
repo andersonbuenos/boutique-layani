@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
+import Navbar from './components/Navbar';
+import ApresentacaoPortal from './components/ApresentacaoPortal';
+import AuthModal from './components/AuthModal';
+import EstoqueView from './components/EstoqueView';
+import VendasView from './components/VendasView';
+import DashboardView from './components/DashboardView';
 import Catalogo from './components/Catalogo';
 import Atendimento from './components/Atendimento';
 import Footer from './components/Footer';
@@ -12,20 +18,34 @@ import {
 import { responderPergunta } from './services/atendenteService';
 import './App.css';
 
-const STORAGE_KEY = 'boutique_layani_chat';
+const STORAGE_CHAT = 'boutique_layani_chat';
+const STORAGE_USER = 'boutique_layani_user';
+const STORAGE_TOKEN = 'boutique_layani_token';
 
 export default function App() {
+  const [usuario, setUsuario] = useState(() => {
+    try {
+      const u = localStorage.getItem(STORAGE_USER);
+      return u ? JSON.parse(u) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [token, setToken] = useState(() => localStorage.getItem(STORAGE_TOKEN) || '');
+  const [telaAtiva, setTelaAtiva] = useState(() => (usuario ? 'loja' : 'portal'));
+  const [modalAuth, setModalAuth] = useState(false);
+  const [modoAuth, setModoAuth] = useState('login');
+
   const [mensagens, setMensagens] = useState(() => {
     try {
-      const salvo = localStorage.getItem(STORAGE_KEY);
+      const salvo = localStorage.getItem(STORAGE_CHAT);
       if (salvo) {
         const parsed = JSON.parse(salvo);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
-        }
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       }
     } catch {
-      // Ignora erro no parse do localStorage
+      // Ignora erro
     }
     return [MENSAGEM_BOAS_VINDAS];
   });
@@ -36,17 +56,66 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(mensagens));
+      localStorage.setItem(STORAGE_CHAT, JSON.stringify(mensagens));
     } catch {
-      // Ignora erro ao salvar no localStorage
+      // Ignora erro
     }
   }, [mensagens]);
+
 
   useEffect(() => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, []);
+
+  const handleSucessoLogin = (novoUsuario, novoToken) => {
+    const userComToken = { ...novoUsuario, token: novoToken };
+    setUsuario(userComToken);
+    setToken(novoToken);
+    try {
+      localStorage.setItem(STORAGE_USER, JSON.stringify(userComToken));
+      localStorage.setItem(STORAGE_TOKEN, novoToken);
+    } catch {
+      // Ignora erro
+    }
+
+    if (novoUsuario.role === 'admin') {
+      setTelaAtiva('dashboard');
+    } else if (novoUsuario.role === 'atendente') {
+      setTelaAtiva('estoque');
+    } else {
+      setTelaAtiva('loja');
+    }
+  };
+
+  const handleLogout = () => {
+    setUsuario(null);
+    setToken('');
+    try {
+      localStorage.removeItem(STORAGE_USER);
+      localStorage.removeItem(STORAGE_TOKEN);
+    } catch {
+      // Ignora erro
+    }
+    setTelaAtiva('portal');
+  };
+
+  const handleLoginRapido = async (email, senha) => {
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, senha }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.erro);
+      handleSucessoLogin(data.usuario, data.token);
+    } catch {
+      setModoAuth('login');
+      setModalAuth(true);
+    }
+  };
 
   const handleEnviarMensagem = (textoPergunta) => {
     const textoLimpo = textoPergunta.trim();
@@ -63,7 +132,6 @@ export default function App() {
     setMensagens((prev) => [...prev, mensagemCliente]);
     setIsDigitando(true);
 
-    // Simula tempo de digitação natural e acolhedor (450ms)
     timerRef.current = setTimeout(() => {
       const textoResposta = responderPergunta(textoLimpo);
       const mensagemAssistente = {
@@ -89,7 +157,7 @@ export default function App() {
     };
     setMensagens([resetMsg]);
     try {
-      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(STORAGE_CHAT);
     } catch {
       // Ignora erro
     }
@@ -98,7 +166,6 @@ export default function App() {
   const handleConsultarPrecoCatalogo = (nomeProduto) => {
     const pergunta = `Quanto custa a ${nomeProduto.toLowerCase()}?`;
     handleEnviarMensagem(pergunta);
-    // Rola suavemente até o chat para o cliente ver a resposta
     const chatEl = document.querySelector('.atendimento-section');
     if (chatEl) {
       chatEl.scrollIntoView({ behavior: 'smooth' });
@@ -113,33 +180,75 @@ export default function App() {
 
       <Header />
 
+      <Navbar
+        usuario={usuario}
+        telaAtiva={telaAtiva}
+        onMudarTela={(tela) => setTelaAtiva(tela)}
+        onAbrirAuth={() => {
+          setModoAuth('login');
+          setModalAuth(true);
+        }}
+        onLogout={handleLogout}
+      />
+
       <main className="main-content" id="conteudo-principal" tabIndex="-1">
-        <aside className="banner-info" aria-label="Informações essenciais da loja">
-          <div className="banner-item">
-            <span aria-hidden="true">🕒</span>
-            <span>
-              <strong>Horário de Funcionamento:</strong> {LOJA.diasFuncionamento}, das {LOJA.horarioAbertura} às {LOJA.horarioFechamento}
-            </span>
-          </div>
-          <div className="banner-item">
-            <span aria-hidden="true">🛵</span>
-            <span>
-              <strong>Taxa Fixa de Entrega:</strong> {formatarPreco(LOJA.taxaEntrega)}
-            </span>
-          </div>
-        </aside>
+        {telaAtiva === 'portal' && (
+          <ApresentacaoPortal
+            onAbrirLogin={() => {
+              setModoAuth('login');
+              setModalAuth(true);
+            }}
+            onAbrirCadastro={() => {
+              setModoAuth('cadastro');
+              setModalAuth(true);
+            }}
+            onVerLoja={() => setTelaAtiva('loja')}
+            onLoginRapido={handleLoginRapido}
+          />
+        )}
 
-        <Catalogo
-          onConsultarPreco={handleConsultarPrecoCatalogo}
-          onAbrirModal={(produto) => setProdutoModal(produto)}
-        />
+        {telaAtiva === 'loja' && (
+          <>
+            <aside className="banner-info" aria-label="Informações essenciais da loja">
+              <div className="banner-item">
+                <span aria-hidden="true">🕒</span>
+                <span>
+                  <strong>Horário de Funcionamento:</strong> {LOJA.diasFuncionamento}, das {LOJA.horarioAbertura} às {LOJA.horarioFechamento}
+                </span>
+              </div>
+              <div className="banner-item">
+                <span aria-hidden="true">🛵</span>
+                <span>
+                  <strong>Taxa Fixa de Entrega:</strong> {formatarPreco(LOJA.taxaEntrega)}
+                </span>
+              </div>
+            </aside>
 
-        <Atendimento
-          mensagens={mensagens}
-          isDigitando={isDigitando}
-          onEnviarMensagem={handleEnviarMensagem}
-          onLimparConversa={handleLimparConversa}
-        />
+            <Catalogo
+              onConsultarPreco={handleConsultarPrecoCatalogo}
+              onAbrirModal={(produto) => setProdutoModal(produto)}
+            />
+
+            <Atendimento
+              mensagens={mensagens}
+              isDigitando={isDigitando}
+              onEnviarMensagem={handleEnviarMensagem}
+              onLimparConversa={handleLimparConversa}
+            />
+          </>
+        )}
+
+        {telaAtiva === 'estoque' && (
+          <EstoqueView token={token} usuario={usuario} />
+        )}
+
+        {telaAtiva === 'vendas' && (
+          <VendasView token={token} usuario={usuario} />
+        )}
+
+        {telaAtiva === 'dashboard' && (
+          <DashboardView token={token} usuario={usuario} />
+        )}
       </main>
 
       <Footer />
@@ -151,8 +260,17 @@ export default function App() {
           onConsultarNoChat={handleConsultarPrecoCatalogo}
         />
       )}
+
+      {modalAuth && (
+        <AuthModal
+          modoInicial={modoAuth}
+          onFechar={() => setModalAuth(false)}
+          onSucessoLogin={handleSucessoLogin}
+        />
+      )}
     </div>
   );
 }
+
 
 
