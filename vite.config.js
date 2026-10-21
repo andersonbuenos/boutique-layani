@@ -9,9 +9,13 @@ export default defineConfig({
       ignored: ['**/DOCS/**', '**/*.zip', '**/node_modules/**'],
     },
   },
+  preview: {
+    allowedHosts: true,
+  },
   test: {
     environment: 'node',
     globals: true,
   },
 });
+
 
