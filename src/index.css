@@ -1,0 +1,105 @@
+:root {
+  --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  
+  /* Paleta Boutique Layani — Rosa Feminino com Classe & Sofisticação */
+  --color-primary: #9d174d;          /* Magenta/Rose profundo elegante */
+  --color-primary-light: #be185d;    /* Rose vibrante refinado */
+  --color-primary-dark: #701a40;     /* Ameixa profundo (alto contraste) */
+  --color-accent: #db2777;           /* Rosa acento moderno */
+  --color-accent-subtle: #fce7f3;    /* Rosa blush suave */
+  --color-accent-hover: #fbcfe8;     /* Rosa claro para hover */
+  
+  --color-bg-main: #fff5f7;          /* Fundo rosado muito suave e acolhedor */
+  --color-bg-card: #ffffff;          /* Cartões em branco puro iluminado */
+  --color-bg-chat: #fdf2f4;          /* Fundo sutil do chat */
+  
+  --color-text-main: #2b0f1a;        /* Ameixa escuro (contraste AAA > 10:1) */
+  --color-text-muted: #5c3b48;       /* Tom neutro rosado escuro (contraste AA > 5:1) */
+  --color-text-light: #7a5564;       /* Legendas acessíveis */
+  
+  --color-border: #fad5df;          /* Borda fina e delicada */
+  --color-border-hover: #f472b6;    /* Borda ativa */
+  --color-border-focus: #db2777;    /* Anel de foco acessível */
+  
+  --color-assistant-bubble: #ffffff; /* Balão assistente branco com sombra leve */
+  --color-client-bubble: #9d174d;    /* Balão cliente rosa veludo */
+  --color-client-text: #ffffff;      /* Texto balão cliente */
+  
+  --color-badge-bg: #fdf2f8;        /* Badge status */
+  --color-badge-border: #fbcfe8;
+  --color-badge-text: #9d174d;
+  
+  --color-success: #15803d;
+  --color-warning-bg: #fff1f2;
+  --color-warning-border: #fecdd3;
+  --color-warning-text: #881337;
+  
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-full: 9999px;
+  
+  --shadow-sm: 0 2px 4px rgba(157, 23, 77, 0.04);
+  --shadow-md: 0 6px 14px -2px rgba(157, 23, 77, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 14px 28px -4px rgba(157, 23, 77, 0.12), 0 4px 10px -2px rgba(0, 0, 0, 0.05);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-bg-main);
+  background-image: radial-gradient(#fce7f3 0.8px, transparent 0.8px);
+  background-size: 24px 24px;
+  color: var(--color-text-main);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+button, input {
+  font: inherit;
+}
+
+/* Link de salto acessível (Skip to Content - WCAG) */
+.skip-link {
+  position: absolute;
+  top: -70px;
+  left: 1.5rem;
+  background: var(--color-primary);
+  color: #ffffff;
+  padding: 0.85rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.95rem;
+  z-index: 999;
+  transition: top 0.25s ease;
+  text-decoration: none;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid #ffffff;
+}
+
+.skip-link:focus {
+  top: 1rem;
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Acessibilidade para leitores de tela */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
