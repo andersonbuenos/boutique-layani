@@ -140,6 +140,59 @@ export const VENDAS = [
   },
 ];
 
+export const VENDEDORES = [
+  {
+    id: 'vend-1',
+    nome: 'Camila Atendente',
+    canalPrincipal: 'WhatsApp & Chat',
+    metaMensal: 3500.0,
+    vendasRealizadas: 3120.0,
+    pedidosFechados: 24,
+    pedidosCancelados: 3,
+    taxaConversao: 68.5,
+    avaliacaoMedia: 4.9,
+  },
+  {
+    id: 'vend-2',
+    nome: 'Mariana Consultora',
+    canalPrincipal: 'Loja Física & WhatsApp',
+    metaMensal: 4000.0,
+    vendasRealizadas: 4280.0,
+    pedidosFechados: 31,
+    pedidosCancelados: 1,
+    taxaConversao: 74.2,
+    avaliacaoMedia: 5.0,
+  },
+  {
+    id: 'vend-3',
+    nome: 'Beatriz Especialista',
+    canalPrincipal: 'Chat Virtual',
+    metaMensal: 3000.0,
+    vendasRealizadas: 1950.0,
+    pedidosFechados: 15,
+    pedidosCancelados: 6,
+    taxaConversao: 48.0,
+    avaliacaoMedia: 4.5,
+  },
+];
+
+export const HISTORICO_MENSAL_VENDAS = [
+  { mes: 'Mai/26', faturamento: 6420.0, pecasVendidas: 76, cancelamentos: 4 },
+  { mes: 'Jun/26', faturamento: 7150.0, pecasVendidas: 84, cancelamentos: 3 },
+  { mes: 'Jul/26', faturamento: 8200.0, pecasVendidas: 98, cancelamentos: 5 },
+  { mes: 'Ago/26', faturamento: 7890.0, pecasVendidas: 91, cancelamentos: 6 },
+  { mes: 'Set/26', faturamento: 8940.0, pecasVendidas: 108, cancelamentos: 4 },
+  { mes: 'Out/26', faturamento: 9350.0, pecasVendidas: 114, cancelamentos: 8 },
+];
+
+export const MOTIVOS_CANCELAMENTO = [
+  { motivo: 'Dúvida de tamanho/grade não informada', percentual: 42, quantidade: 8, valorPerdido: 890.0 },
+  { motivo: 'Desistência de frete ou área não atendida', percentual: 26, quantidade: 5, valorPerdido: 480.0 },
+  { motivo: 'Forma de pagamento (procurou parcelamento)', percentual: 18, quantidade: 3, valorPerdido: 340.0 },
+  { motivo: 'Demora no retorno humano do WhatsApp', percentual: 14, quantidade: 2, valorPerdido: 190.0 },
+];
+
+
 export const LOJA_INFO = {
   nome: 'Boutique Layani',
   descricao: 'Atendimento virtual e moda feminina exclusiva',
