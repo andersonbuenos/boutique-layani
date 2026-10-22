@@ -5,15 +5,16 @@
 }
 
 .navbar-container {
-  max-width: 1040px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0.6rem 1.25rem;
+  padding: 0.6rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
 }
+
 
 .navbar-links {
   display: flex;

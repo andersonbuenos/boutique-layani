@@ -7,13 +7,13 @@
 
 .main-content {
   flex: 1;
-  max-width: 1040px;
+  max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  padding: 1.75rem 1.25rem;
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 2.25rem;
+  gap: 2rem;
 }
 
 /* Header com Classe e Feminilidade */
@@ -29,15 +29,16 @@
 }
 
 .header-container {
-  max-width: 1040px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 1.1rem 1.25rem;
+  padding: 1.1rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.25rem;
   flex-wrap: wrap;
 }
+
 
 .brand {
   display: flex;
@@ -385,7 +386,7 @@
 }
 
 .footer-container {
-  max-width: 1040px;
+  max-width: 1280px;
   margin: 0 auto;
   text-align: center;
   display: flex;
@@ -414,13 +415,14 @@
   .header-container {
     flex-direction: column;
     align-items: flex-start;
-    padding: 1rem;
+    padding: 0.85rem 0.75rem;
   }
 
   .main-content {
-    padding: 1.25rem 0.85rem;
-    gap: 1.75rem;
+    padding: 1rem 0.75rem;
+    gap: 1.5rem;
   }
+
 
   .catalogo-grid {
     grid-template-columns: 1fr;
