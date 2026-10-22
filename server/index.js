@@ -15,6 +15,8 @@ import { authMiddleware } from './middlewares/authMiddleware.js';
 
 import { requireAdmin } from './middlewares/roleMiddleware.js';
 
+import { testarConexaoMySQL } from './database/db.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -115,10 +117,12 @@ app.use((req, res, next) => {
 
 // Inicia servidor apenas se executado diretamente
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
+  app.listen(PORT, async () => {
     console.log(`[Boutique Layani API] Servidor rodando na porta ${PORT}`);
     console.log(`[Swagger Docs] Disponível para Admin em http://localhost:${PORT}/api-docs`);
+    await testarConexaoMySQL();
   });
 }
+
 
 export default app;

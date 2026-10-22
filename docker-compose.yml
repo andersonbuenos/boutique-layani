@@ -1,0 +1,57 @@
+services:
+  # 1. BANCO DE DADOS RELACIONAL ROBUSTO MYSQL
+  mysql:
+    image: mysql:8.0
+    container_name: boutique_layani_mysql
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: root_layani_2026
+      MYSQL_DATABASE: boutique_layani
+      MYSQL_USER: layani_user
+      MYSQL_PASSWORD: layani_pass_2026
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./server/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_layani_2026"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - boutique_network
+
+  # 2. APLICAÇÃO FULLSTACK BOUTIQUE LAYANI (NODE.JS / REACT)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: boutique_layani_app
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: layani_user
+      DB_PASSWORD: layani_pass_2026
+      DB_NAME: boutique_layani
+      JWT_SECRET: boutique_layani_secret_key_2026_super_secure
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - boutique_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  boutique_network:
+    driver: bridge
