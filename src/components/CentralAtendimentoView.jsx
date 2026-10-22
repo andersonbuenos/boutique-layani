@@ -26,6 +26,28 @@ export default function CentralAtendimentoView({ usuario }) {
       localStorage.setItem('boutique_sessoes_chat', JSON.stringify(sessoes));
     } catch {}
   }, [sessoes]);
+  useEffect(() => {
+    const recarregar = () => {
+      try {
+        const s = localStorage.getItem('boutique_sessoes_chat');
+        if (s) {
+          const parsed = JSON.parse(s);
+          if (Array.isArray(parsed)) setSessoes(parsed);
+        }
+      } catch {}
+    };
+
+    window.addEventListener('boutique_chat_atualizado', recarregar);
+    window.addEventListener('storage', recarregar);
+    const interval = setInterval(recarregar, 2000);
+
+    return () => {
+      window.removeEventListener('boutique_chat_atualizado', recarregar);
+      window.removeEventListener('storage', recarregar);
+      clearInterval(interval);
+    };
+  }, []);
+
 
   const handleVerAtendimento = (sessao) => {
     setChatSelecionado(sessao);

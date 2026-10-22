@@ -5,6 +5,52 @@ import { requireRoles } from '../middlewares/roleMiddleware.js';
 
 export const atendimentosRouter = Router();
 
+// POST /api/atendimentos/cliente-mensagem - Rota pública para cliente novo criar sessão no backend
+atendimentosRouter.post('/cliente-mensagem', (req, res) => {
+  const { sessaoId, clienteNome, clienteEmail, textoCliente, textoResposta } = req.body || {};
+  if (!textoCliente) return res.status(400).json({ erro: 'Texto obrigatório.' });
+
+  const horaIso = new Date().toISOString();
+  const index = SESSOES_CHAT.findIndex((s) => s.id === sessaoId);
+
+  const msgCli = {
+    id: `cli-${Date.now()}`,
+    autor: 'cliente',
+    autorNome: clienteNome || 'Cliente Nova',
+    texto: textoCliente,
+    dataHora: horaIso,
+  };
+
+  const msgAst = {
+    id: `ast-${Date.now() + 1}`,
+    autor: 'assistente',
+    autorNome: 'Assistente Virtual',
+    texto: textoResposta || '',
+    dataHora: horaIso,
+  };
+
+  if (index >= 0) {
+    SESSOES_CHAT[index].status = 'on';
+    SESSOES_CHAT[index].ultimaMensagemEm = horaIso;
+    SESSOES_CHAT[index].mensagens.push(msgCli, msgAst);
+  } else {
+    const nova = {
+      id: sessaoId || `chat-${Date.now()}`,
+      clienteNome: clienteNome || 'Cliente Nova (Site)',
+      clienteEmail: clienteEmail || 'cliente.loja@layani.com.br',
+      canal: 'Chat Virtual da Loja',
+      status: 'on',
+      atendimentoStatus: 'bot',
+      atendenteNome: null,
+      ultimaMensagemEm: horaIso,
+      mensagens: [msgCli, msgAst],
+    };
+    SESSOES_CHAT.unshift(nova);
+  }
+
+  return res.json({ sucesso: true });
+});
+
 // Todos os endpoints abaixo são acessíveis exclusivamente por 'admin' e 'atendente'
 atendimentosRouter.use(authMiddleware, requireRoles(['admin', 'atendente']));
 

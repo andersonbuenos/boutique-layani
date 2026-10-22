@@ -19,6 +19,8 @@ import {
 } from './data/boutiqueData';
 import { responderPergunta } from './services/atendenteService';
 import { loginUsuario } from './services/authService';
+import { registrarMensagemCliente } from './services/chatSyncService';
+
 import './App.css';
 
 
@@ -142,21 +144,13 @@ export default function App() {
 
       setMensagens((prev) => [...prev, mensagemAssistente]);
       setIsDigitando(false);
-    }, 450);
-      // Sincroniza sessão da central para status ON com alert dot
-      try {
-        const salvo = localStorage.getItem('boutique_sessoes_chat');
-        if (salvo) {
-          const sessoes = JSON.parse(salvo);
-          if (sessoes && sessoes[0]) {
-            sessoes[0].status = 'on';
-            sessoes[0].ultimaMensagem = textoLimpo;
-            localStorage.setItem('boutique_sessoes_chat', JSON.stringify(sessoes));
-          }
-        }
-      } catch {}
 
+      // Registra a mensagem na Central de Atendimentos:
+      // se for um cliente novo, cria um NOVO CARD no topo com alert dot pulsante!
+      registrarMensagemCliente(usuario, textoLimpo, textoResposta);
+    }, 450);
   };
+
 
   const handleLimparConversa = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
