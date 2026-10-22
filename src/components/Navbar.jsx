@@ -54,6 +54,18 @@ export default function Navbar({
               <span>Estoque</span>
             </button>
           )}
+          {/* Central de Atendimentos ao Vivo - Acessível para Admin e Atendente */}
+          {(isAdmin || isAtendente) && (
+            <button
+              type="button"
+              className={`nav-btn ${telaAtiva === 'chats' ? 'ativo' : ''}`}
+              onClick={() => onMudarTela('chats')}
+            >
+              <span className="alert-dot-pulse" aria-hidden="true"></span>
+              <span>Chats ao Vivo</span>
+            </button>
+          )}
+
 
           {/* Vendas - Acessível apenas para Admin */}
           {isAdmin && (

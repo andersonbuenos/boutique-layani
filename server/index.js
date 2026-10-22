@@ -10,7 +10,9 @@ import { vendasRouter } from './routes/vendasRoutes.js';
 import { dashboardRouter } from './routes/dashboardRoutes.js';
 import { lojaRouter } from './routes/lojaRoutes.js';
 import { chatRouter } from './routes/chatRoutes.js';
+import { atendimentosRouter } from './routes/atendimentosRoutes.js';
 import { authMiddleware } from './middlewares/authMiddleware.js';
+
 import { requireAdmin } from './middlewares/roleMiddleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -28,8 +30,10 @@ app.use('/api/auth', authRouter);
 app.use('/api/estoque', estoqueRouter);
 app.use('/api/vendas', vendasRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/atendimentos', atendimentosRouter);
 app.use('/api', lojaRouter);
 app.use('/api/chat', chatRouter);
+
 
 // ROTA DO SWAGGER PROTEGIDA POR ADMIN
 // Regra de segurança estrita: apenas usuários autenticados com perfil ADMIN podem carregar e usar o Swagger UI

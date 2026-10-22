@@ -1,0 +1,56 @@
+export const SESSOES_PADRAO = [
+  {
+    id: 'chat-sessao-1',
+    clienteNome: 'Juliana Silva',
+    clienteEmail: 'cliente@gmail.com',
+    canal: 'Chat Virtual da Loja',
+    status: 'on',
+    atendimentoStatus: 'bot',
+    atendenteNome: null,
+    ultimaMensagem: 'Olá! Vocês têm a calça jeans tamanho 38 disponível? Gostaria de saber também sobre o frete.',
+    mensagens: [
+      { id: '1', autor: 'assistente', autorNome: 'Assistente', texto: 'Olá! Seja bem-vinda à Boutique Layani. Como posso ajudar?', dataHora: '14:20' },
+      { id: '2', autor: 'cliente', autorNome: 'Juliana', texto: 'Olá! Vocês têm a calça jeans tamanho 38 disponível? Gostaria de saber também sobre o frete.', dataHora: '14:22' },
+    ],
+  },
+  {
+    id: 'chat-sessao-2',
+    clienteNome: 'Fernanda Rocha',
+    clienteEmail: 'fernanda.rocha@hotmail.com',
+    canal: 'Chat Virtual da Loja',
+    status: 'off',
+    atendimentoStatus: 'encerrado',
+    atendenteNome: 'Camila Atendente',
+    ultimaMensagem: 'Obrigada pelo atendimento! Comprei o vestido.',
+    mensagens: [
+      { id: '3', autor: 'cliente', autorNome: 'Fernanda', texto: 'Obrigada pelo atendimento! Comprei o vestido.', dataHora: '11:40' },
+      { id: '4', autor: 'assistente', autorNome: 'Assistente', texto: 'Atendimento finalizado com sucesso! A Boutique Layani agradece.', dataHora: '11:42' },
+    ],
+  },
+  {
+    id: 'chat-sessao-3',
+    clienteNome: 'Beatriz Lima',
+    clienteEmail: 'beatriz.lima@yahoo.com',
+    canal: 'Chat Virtual da Loja',
+    status: 'on',
+    atendimentoStatus: 'bot',
+    atendenteNome: null,
+    ultimaMensagem: 'Quero fechar a compra do vestido tamanho M, vocês entregam hoje?',
+    mensagens: [
+      { id: '5', autor: 'cliente', autorNome: 'Beatriz', texto: 'Quero fechar a compra do vestido tamanho M, vocês entregam hoje?', dataHora: '15:10' },
+    ],
+  },
+  {
+    id: 'chat-sessao-4',
+    clienteNome: 'Mariana Duarte',
+    clienteEmail: 'mariana.duarte@outlook.com',
+    canal: 'Chat Virtual da Loja',
+    status: 'off',
+    atendimentoStatus: 'bot',
+    atendenteNome: null,
+    ultimaMensagem: 'Qual é o horário de atendimento no sábado?',
+    mensagens: [
+      { id: '6', autor: 'cliente', autorNome: 'Mariana', texto: 'Qual é o horário de atendimento no sábado?', dataHora: '10:05' },
+    ],
+  },
+];

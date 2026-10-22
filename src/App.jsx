@@ -5,6 +5,8 @@ import ApresentacaoPortal from './components/ApresentacaoPortal';
 import AuthModal from './components/AuthModal';
 import EstoqueView from './components/EstoqueView';
 import VendasView from './components/VendasView';
+import CentralAtendimentoView from './components/CentralAtendimentoView';
+
 import DashboardView from './components/DashboardView';
 import Catalogo from './components/Catalogo';
 import Atendimento from './components/Atendimento';
@@ -141,6 +143,19 @@ export default function App() {
       setMensagens((prev) => [...prev, mensagemAssistente]);
       setIsDigitando(false);
     }, 450);
+      // Sincroniza sessão da central para status ON com alert dot
+      try {
+        const salvo = localStorage.getItem('boutique_sessoes_chat');
+        if (salvo) {
+          const sessoes = JSON.parse(salvo);
+          if (sessoes && sessoes[0]) {
+            sessoes[0].status = 'on';
+            sessoes[0].ultimaMensagem = textoLimpo;
+            localStorage.setItem('boutique_sessoes_chat', JSON.stringify(sessoes));
+          }
+        }
+      } catch {}
+
   };
 
   const handleLimparConversa = () => {
@@ -238,6 +253,11 @@ export default function App() {
         {telaAtiva === 'estoque' && (
           <EstoqueView token={token} usuario={usuario} />
         )}
+
+        {telaAtiva === 'chats' && (
+          <CentralAtendimentoView usuario={usuario} token={token} />
+        )}
+
 
         {telaAtiva === 'vendas' && (
           <VendasView token={token} usuario={usuario} />
