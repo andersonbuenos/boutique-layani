@@ -151,7 +151,9 @@
 .btn-assumir-inovador:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(157, 23, 77, 0.4);
+}
 
+/* Botão Estilizado de Encerrar Atendimento com Cores da Boutique */
 .btn-encerrar-atendimento {
   appearance: none;
   -webkit-appearance: none;
@@ -201,8 +203,6 @@
   color: #dc2626;
   border-color: #fca5a5;
   transform: scale(1.05);
-}
-
 }
 
 /* Corpo com Duas Colunas */
@@ -270,7 +270,7 @@
 }
 
 .msg-atendente .msg-bolha-texto {
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  background: linear-gradient(135deg, #be185d 0%, #9d174d 100%);
   color: #ffffff;
   border-bottom-right-radius: 4px;
 }
