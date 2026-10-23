@@ -18,33 +18,35 @@ export default function BarraAcoesAtendenteChat({
       <div className="acoes-rapidas-inovador">
         <button
           type="button"
-          className="btn-acao-rapida"
-          style={{ background: '#dcfce7', color: '#166534', borderColor: '#bbf7d0' }}
+          className="btn-acao-rapida btn-acao-venda"
           onClick={onAbrirCheckout}
         >
-          🛍️ Fechar Venda (PIX / Cartão / Entrega)
+          <span>🛍️</span>
+          <span>Fechar Venda (PIX / Cartão / Entrega)</span>
         </button>
         <button
           type="button"
-          className="btn-acao-rapida"
+          className="btn-acao-rapida btn-acao-reverter"
           onClick={() =>
             setInputResposta(
               'Querida cliente, não cancele! 🌸 Liberei para você um cupom exclusivo com FRETE GRÁTIS para concluir seu pedido agora!'
             )
           }
         >
-          🛡️ Reverter Cancelamento
+          <span>🛡️</span>
+          <span>Reverter Cancelamento</span>
         </button>
         <button
           type="button"
-          className="btn-acao-rapida"
+          className="btn-acao-rapida btn-acao-medidas"
           onClick={() =>
             setInputResposta(
               'Nossa tabela de medidas é: P (36-38), M (40-42) e G (44). O caimento é perfeito e acinturado!'
             )
           }
         >
-          📏 Tabela de Medidas
+          <span>📏</span>
+          <span>Tabela de Medidas</span>
         </button>
       </div>
 
@@ -61,9 +63,11 @@ export default function BarraAcoesAtendenteChat({
           className="btn-enviar-inovador"
           disabled={!inputResposta.trim()}
         >
-          Enviar Mensagem
+          <span>Enviar Mensagem</span>
+          <span>➤</span>
         </button>
       </form>
     </div>
   );
 }
+
