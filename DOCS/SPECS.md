@@ -1,131 +1,61 @@
 
-# SPECS — Boutique Layani
+# SPECS — Boutique Layani (Versão 2.5)
 
-## 1. Arquitetura do MVP
+## 1. Arquitetura da Plataforma
 
-Aplicação web local, sem backend.
+Aplicação fullstack de alta performance, conteinerizada em Docker e sem dependência de serviços externos de IA paga.
 
-Tecnologias:
-React
-Vite
-JavaScript
-CSS
+- **Frontend:** React 18, Vite 5, amCharts 5 (versão CDN oficial para gráficos interativos), CSS3 puro modular com tokens customizados.
+- **Backend:** Node.js, Express, middlewares de segurança JWT e validação de papéis (RBAC).
+- **Banco de Dados:** MySQL 8.0 em container Docker com persistência em volume `mysql_data` e pool de conexões com tolerância a falhas (`mysql2/promise`).
+- **Comunicação em Tempo Real:** Sincronização simultânea (0ms de atraso) via `BroadcastChannel` para troca de mensagens entre abas de cliente e atendente.
 
-Não utilizar APIs externas nem serviços pagos.
+---
 
-## 2. Estrutura de dados
+## 2. Modelagem Relacional & Schemas (MySQL 8.0)
 
-Produto:
-id: identificador
-nome: texto
-preco: número
+1. `usuarios`: Credenciais com hash bcrypt, papel (`admin`, `atendente`, `cliente`).
+2. `categorias`: Segmentação de vestuário.
+3. `produtos`: SKU, preços, custos, tamanhos e narrativas de dorama.
+4. `estoque`: Quantidade, estoque de segurança e alertas de reposição.
+5. `vendedores`: Metas mensais, vendas realizadas e taxa de conversão.
+6. `pedidos` & `pedido_itens`: Cabeçalhos e itens com código oficial `PED-2026-XXXX`.
+7. `atendimentos` & `atendimento_mensagens`: Sessões ao vivo (`on`/`off`, `bot`/`humano`).
+8. `fato_vendas_mensal`: Data Mart agregada de 6 meses para o amCharts 5.
+9. `fato_motivos_cancelamento`: Análise quantitativa de cancelamentos.
+10. `logs_atendimento`, `logs_compras_detalhadas`, `telemetria_seo`: Auditoria do Prisma BI.
 
-Produtos iniciais:
-1.Camiseta — 39.90
-2.Calça jeans — 119.90
-3.Vestido — 89.90
+---
 
-Loja:
--nome
--diasFuncionamento
--horarioAbertura
--horarioFechamento
--taxaEntrega
+## 3. Endpoints da API REST
 
-Mensagem:
--id
--autor: cliente ou assistente
--texto
--dataHora
+- **Autenticação:**
+  - `POST /api/auth/login`: Autentica usuário e emite JWT.
+  - `POST /api/auth/register`: Cadastro forçado em papel `cliente` (bloqueia criação de admin).
+  - `GET /api/auth/me`: Retorna perfil logado.
+- **Módulos Administrativos (Somente GET para consultas):**
+  - `GET /api/estoque`: Restrito a `admin` e `atendente`.
+  - `GET /api/vendas`: Restrito exclusivamente a `admin`.
+  - `GET /api/dashboard`: Restrito exclusivamente a `admin` (KPIs e amCharts).
+  - `GET /api-docs`: Swagger UI exclusivo para `admin` com token Bearer.
+- **Central de Atendimentos:**
+  - `GET /api/atendimentos`: Lista cards com status `ON`/`OFF`.
+  - `POST /api/atendimentos/:id/assumir`: Assume com delay de 5s.
+  - `POST /api/atendimentos/:id/responder`: Envia mensagem simultânea.
+  - `POST /api/atendimentos/:id/encerrar`: Finaliza atendimento e fecha card.
+- **Vendas & Checkout:**
+  - `POST /api/vendas/checkout`: Fecha pedido com PIX, Cartão ou Pagamento na Entrega.
+- **Públicos:**
+  - `GET /api/produtos`, `GET /api/loja`, `POST /api/chat`.
 
-## 3. Interface
+---
 
-Uma única página contendo:
+## 4. Comportamento do Assistente Virtual & Central
 
-### Cabeçalho
+1. **Listar Produtos:** Retorna lista com camiseta, calça e vestido, seus valores e tamanhos.
+2. **Informar Tamanhos:** Informa grades oficiais (Camiseta: P/M/G; Calça: 36 ao 44; Vestido: P/M).
+3. **Fechar Venda:** Calcula valor com taxa de entrega (R$ 10,00) e emite resumo formal.
+4. **Reverter Cancelamento:** Tenta retenção com cupom de frete grátis antes de encaminhar.
+5. **Transição de Atendimento:** Ao assumir, exibe mensagem do sistema, aguarda 5s e apresenta o atendente logado.
+6. **Fechamento de Card:** Fecha automaticamente o card do assistente após 10s do direcionamento e fecha o card ao encerrar o atendimento.
 
--Nome Boutique Layani
--Descrição: Atendimento virtual demonstrativo
-
-### Catálogo
-
-- Card da camiseta
-- Card da calça jeans
-- Card do vestido
-- Preços formatados em reais
-
-### Atendimento
-
-- Histórico de mensagens
-- Campo para digitar pergunta
-- Botão Enviar
-- Botão Limpar conversa
-- Botões de perguntas sugeridas
-
-### Rodapé
-
-Aviso: demonstração educacional com dados fictícios.
-
-## 4. Comportamento do assistente
-
-Identificar perguntas por palavras-chave normalizadas.
-
-Remover diferenças de maiúsculas/minúsculas
-e acentos ao comparar as perguntas.
-
-Assuntos conhecidos:
-
-- Horário de funcionamento
-- Preço da camiseta
-- Preço da calça jeans
-- Preço do vestido
-- Taxa de entrega
-
-Para consultas desconhecidas:
-"Não tenho essa informação no momento.
-Por favor, consulte um atendente humano."
-
-Não informar disponibilidade de estoque ou tamanhos.
-
-## 5. Requisitos de acessibilidade
-
-- Layout adaptável ao celular.
-- Campos com rótulos acessíveis.
-- Navegação por teclado.
-- Botões grandes o suficiente para toque.
-- Contraste adequado.
-- Mensagens legíveis sem rolagem horizontal.
-- Uso de regiões acessíveis para novas respostas.
-
-## 6. Persistência
-
-Usar estado local do React.
-
-Opcionalmente, manter a conversa em localStorage.
-Não armazenar dados pessoais.
-
-## 7. Testes mínimos
-
-Pergunta: "Quanto custa a camiseta?"
-Resultado: R$ 39,90.
-
-Pergunta: "Qual o horário?"
-Resultado: segunda a sábado, das 8h às 18h.
-
-Pergunta: "Qual o valor da entrega?"
-Resultado: R$ 10,00.
-
-Pergunta: "Tem calça tamanho G?"
-Resultado: encaminhar para atendente humano.
-
-Pergunta: "Vocês vendem sapatos?"
-Resultado: não inventar informações.
-
-## 8. Execução
-
-Disponibilizar os comandos:
-npm install
-npm run dev
-npm run build
-
-Documentar tudo no README.md.

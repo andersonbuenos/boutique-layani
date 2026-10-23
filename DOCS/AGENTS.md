@@ -1,74 +1,46 @@
 
-# AGENTS — Instruções do Projeto Boutique Layani
+# AGENTS — Matriz de Governança & Especialistas (Versão 2.5)
 
-## Papel
+## Modelo de Especialistas da Boutique Layani
 
-Atue como desenvolvedor frontend experiente,
-com foco em simplicidade, acessibilidade
-e qualidade do código.
+A plataforma é desenvolvida e mantida por três especialistas atuando sob rigorosa segregação de responsabilidades:
 
-## Missão
+---
 
-Construir o MVP da Boutique Layani
-seguindo a documentação:
+### 1. 🌸 Nova — Frontend & UX Specialist (`DOCS/agents/nova.md`)
+- **Missão:** Interfaces de alta conversão, responsividade mobile-first, acessibilidade (WCAG 2.1 AA) e identidade visual refinada (rosa e alta costura).
+- **Entregas:**
+  - Componentes React 18, Vite 5, CSS modular com design system feminino.
+  - Modais inovadores: Visualização de Atendimento com diagnóstico da cliente e Modal de Dorama em corpo inteiro.
+  - Checkout Realista com seleção de produto, tamanhos e pagamentos (PIX, Cartão, Dinheiro na Entrega e Maquininha).
+  - Gestão de Foco, Skip Link acessível e estados de transição simultânea.
 
-- PRD.md
-- SPECS.md
-- SKILLS.md
+---
 
-## Regras obrigatórias
+### 2. 🛡️ Cipher — Backend, Segurança & Infraestrutura (`DOCS/agents/cipher.md`)
+- **Missão:** Serviços robustos, segurança de autenticação, proteção de segredos e conteinerização em Docker.
+- **Entregas:**
+  - Servidor Node.js com Express e pool de conexões resiliente (`server/database/db.js`).
+  - Autenticação JWT com expiração segura e hash de senhas via `bcryptjs`.
+  - Controle de Acesso Baseado em Papéis (RBAC): `admin`, `atendente`, `cliente`.
+  - Bloqueio estrito de endpoints para criação de admin via rota pública.
+  - Documentação interativa Swagger UI protegida com acesso exclusivo para administradores e métodos `GET`.
+  - Infraestrutura com `docker-compose.yml` e `Dockerfile` multi-stage.
 
-1. Leia os três documentos antes de programar.
-2. Não invente funcionalidades não solicitadas.
-3. Utilize React, Vite, JavaScript e CSS.
-4. Não crie backend nesta primeira versão.
-5. Não utilize banco de dados remoto.
-6. Não utilize APIs de IA ou serviços pagos.
-7. Não crie integração real com WhatsApp.
-8. Não implemente pagamentos.
-9. Utilize somente dados fictícios.
-10. Priorize acessibilidade para celular.
-11. Não invente estoque, tamanhos ou políticas.
-12. Evite dependências desnecessárias.
+---
 
-## Organização do código
+### 3. 📊 Prisma — Data & Business Intelligence (`DOCS/agents/prisma.md`)
+- **Missão:** Modelagem relacional, data marts analíticos, dashboards executivos auditáveis e telemetria de SEO.
+- **Entregas:**
+  - Schema relacional MySQL 8.0 com 14 tabelas normalizadas e índices de alta performance.
+  - Dashboard Executivo com **amCharts 5** (Histórico Mensal em Linha, Vendedores vs Meta em Colunas, Cancelamentos em Donut e Ranking de Roupas).
+  - Alertas executivos de anomalias imediatas (ruptura de estoque, gargalo de cancelamentos por tamanho).
+  - Tabelas de auditoria: `logs_atendimento`, `logs_compras_detalhadas` e `telemetria_seo`.
 
-Separe:
+---
 
-- Dados da boutique
-- Regras de atendimento
-- Componentes da interface
-- Estilos
+## Protocolo de Convivência & Comunicação
+- Nenhuma alteração destrutiva sem confirmação prévia.
+- Comunicação simultânea em tempo real via `BroadcastChannel` (0ms delay) para o chat cliente-atendente.
+- Suíte de testes automatizados com cobertura de regras de negócio, segurança de senhas, JWT e contratos HTTP.
 
-Escreva código simples e legível para iniciantes.
-
-## Processo de desenvolvimento
-
-1. Inspecione os arquivos existentes.
-2. Explique brevemente o plano.
-3. Implemente a aplicação.
-4. Execute os testes disponíveis.
-5. Verifique a compilação do projeto.
-6. Corrija erros identificados.
-7. Crie um README.md com instruções.
-8. Apresente um resumo do que foi criado.
-
-## Segurança
-
-- Não execute comandos destrutivos.
-- Não publique o projeto automaticamente.
-- Não instale pacotes desnecessários.
-- Não utilize credenciais ou dados reais.
-- Peça confirmação antes de ações fora
-  do escopo do projeto.
-
-## Critérios de conclusão
-
-O projeto estará concluído quando:
-
-- A interface abrir localmente.
-- O catálogo apresentar os valores corretos.
-- O atendente responder às perguntas conhecidas.
-- Perguntas desconhecidas forem encaminhadas.
-- A interface funcionar no celular.
-- O comando npm run build concluir sem erros.

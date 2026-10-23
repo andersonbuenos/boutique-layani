@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { SESSOES_PADRAO } from '../data/sessoesChatData';
 import CardSessaoChat from './CardSessaoChat';
 import ModalAtendimentoGaveta from './ModalAtendimentoGaveta';
+import ModalVerAtendimentoInovador from './ModalVerAtendimentoInovador';
+import { emitirEventoChat, escutarEventosChat } from '../services/liveChatBroadcast';
 import './CentralAtendimentoView.css';
 
 const horaAgora = () =>
@@ -18,7 +20,8 @@ export default function CentralAtendimentoView({ usuario }) {
   });
 
   const [chatSelecionado, setChatSelecionado] = useState(null);
-  const [modoModal, setModoModal] = useState('ver');
+  const [modalVer, setModalVer] = useState(false);
+  const [modalAssumir, setModalAssumir] = useState(false);
   const [contagemDelay, setContagemDelay] = useState(0);
 
   useEffect(() => {
@@ -26,6 +29,7 @@ export default function CentralAtendimentoView({ usuario }) {
       localStorage.setItem('boutique_sessoes_chat', JSON.stringify(sessoes));
     } catch {}
   }, [sessoes]);
+
   useEffect(() => {
     const recarregar = () => {
       try {
@@ -37,69 +41,80 @@ export default function CentralAtendimentoView({ usuario }) {
       } catch {}
     };
 
+    const cleanup = escutarEventosChat((evento) => {
+      if (evento?.tipo === 'MENSAGEM_CLIENTE' || evento?.tipo === 'NOVO_CHAT') {
+        recarregar();
+      }
+    });
+
     window.addEventListener('boutique_chat_atualizado', recarregar);
     window.addEventListener('storage', recarregar);
     const interval = setInterval(recarregar, 2000);
 
     return () => {
+      cleanup();
       window.removeEventListener('boutique_chat_atualizado', recarregar);
       window.removeEventListener('storage', recarregar);
       clearInterval(interval);
     };
   }, []);
 
-
   const handleVerAtendimento = (sessao) => {
     setChatSelecionado(sessao);
-    setModoModal('ver');
-    setContagemDelay(0);
+    setModalVer(true);
   };
 
+
   const handleAssumirAtendimento = (sessao) => {
+    setModalVer(false);
     const nomeAtd = usuario?.nome || 'Atendente';
-    setChatSelecionado(sessao);
-    setModoModal('assumir');
+    const agora = horaAgora();
 
-    if (sessao.atendenteNome === nomeAtd && sessao.atendimentoStatus === 'humano') {
-      setContagemDelay(0);
-      return;
-    }
-
-    const msgDir = {
-      id: `sys-${Date.now()}`,
-      autor: 'sistema',
-      autorNome: 'Sistema',
-      texto: 'Direcionando seu atendimento para um atendente especializado...',
-      dataHora: horaAgora(),
-    };
-
-    const atualizada = {
+    const cardId = `chat-atd-${sessao.id}`;
+    const cardAtendente = {
       ...sessao,
+      id: cardId,
       status: 'on',
       atendimentoStatus: 'direcionando',
       atendenteNome: nomeAtd,
-      mensagens: [...sessao.mensagens, msgDir],
+      mensagens: [
+        ...sessao.mensagens,
+        {
+          id: `sys-${Date.now()}`,
+          autor: 'sistema',
+          autorNome: 'Sistema',
+          texto: 'Direcionando seu atendimento para um atendente especializado...',
+          dataHora: agora,
+        },
+      ],
     };
 
-    setSessoes((p) => p.map((s) => (s.id === sessao.id ? atualizada : s)));
-    setChatSelecionado(atualizada);
+    setChatSelecionado(cardAtendente);
+    setModalAssumir(true);
+    setSessoes((p) => [cardAtendente, ...p.filter((s) => s.id !== sessao.id && s.id !== cardId)]);
+
+    // Requisito 8: Fecha o card antigo do assistente após 10 segundos
+    setTimeout(() => {
+      setSessoes((p) => p.filter((s) => s.id !== sessao.id));
+    }, 10000);
 
     setContagemDelay(5);
     const timer = setInterval(() => {
       setContagemDelay((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
+          const hora = horaAgora();
           const msgAtd = {
             id: `atd-${Date.now()}`,
             autor: 'atendente',
             autorNome: nomeAtd,
             texto: `${nomeAtd}: Olá, meu nome é ${nomeAtd}, como posso te ajudar? Insira sua dúvida abaixo.`,
-            dataHora: horaAgora(),
+            dataHora: hora,
           };
 
           setSessoes((p) =>
             p.map((s) => {
-              if (s.id === sessao.id) {
+              if (s.id === cardId) {
                 const finalS = {
                   ...s,
                   atendimentoStatus: 'humano',
@@ -107,6 +122,7 @@ export default function CentralAtendimentoView({ usuario }) {
                   ultimaMensagem: msgAtd.texto,
                 };
                 setChatSelecionado(finalS);
+                emitirEventoChat({ tipo: 'ATENDENTE_ASSUMIU', sessao: finalS });
                 return finalS;
               }
               return s;
@@ -122,12 +138,13 @@ export default function CentralAtendimentoView({ usuario }) {
   const handleEnviarMensagem = (texto) => {
     if (!chatSelecionado) return;
     const nomeAtd = usuario?.nome || 'Atendente';
+    const hora = horaAgora();
     const novaMsg = {
       id: `msg-${Date.now()}`,
       autor: 'atendente',
       autorNome: nomeAtd,
       texto: `${nomeAtd}: ${texto}`,
-      dataHora: horaAgora(),
+      dataHora: hora,
     };
 
     const atual = {
@@ -139,29 +156,37 @@ export default function CentralAtendimentoView({ usuario }) {
 
     setSessoes((p) => p.map((s) => (s.id === chatSelecionado.id ? atual : s)));
     setChatSelecionado(atual);
+
+    emitirEventoChat({
+      tipo: 'MENSAGEM_ATENDENTE',
+      sessaoId: chatSelecionado.id,
+      mensagem: novaMsg,
+    });
   };
 
+  // Requisito 9: Ao encerrar o atendimento, fecha o card automaticamente
   const handleEncerrarAtendimento = () => {
     if (!chatSelecionado) return;
+    const hora = horaAgora();
     const msgFim = {
       id: `fim-${Date.now()}`,
       autor: 'assistente',
       autorNome: 'Assistente Virtual',
       texto:
         'Atendimento com nossa especialista finalizado com muito carinho! Agradecemos por escolher a Boutique Layani. Se precisar de mais alguma coisa ou quiser tirar novas dúvidas, estou sempre por aqui à sua disposição. Tenha um dia maravilhoso e repleto de elegância! ✨🌸',
-      dataHora: horaAgora(),
+      dataHora: hora,
     };
 
-    const encerrada = {
-      ...chatSelecionado,
-      status: 'off',
-      atendimentoStatus: 'encerrado',
-      mensagens: [...chatSelecionado.mensagens, msgFim],
-      ultimaMensagem: 'Atendimento finalizado com sucesso.',
-    };
+    emitirEventoChat({
+      tipo: 'ATENDIMENTO_ENCERRADO',
+      sessaoId: chatSelecionado.id,
+      mensagem: msgFim,
+    });
 
-    setSessoes((p) => p.map((s) => (s.id === chatSelecionado.id ? encerrada : s)));
-    setChatSelecionado(encerrada);
+    // Remove o card automaticamente
+    setSessoes((p) => p.filter((s) => s.id !== chatSelecionado.id));
+    setModalAssumir(false);
+    setChatSelecionado(null);
   };
 
   const totalAtivos = sessoes.filter((s) => s.status === 'on').length;
@@ -183,7 +208,7 @@ export default function CentralAtendimentoView({ usuario }) {
             <span>{totalAtivos} Chat(s) Online</span>
           </div>
           <div className="kpi-mini-card">
-            <span>📁 {sessoes.length} Sessões</span>
+            <span>📁 {sessoes.length} Sessões Ativas</span>
           </div>
         </div>
       </div>
@@ -199,13 +224,21 @@ export default function CentralAtendimentoView({ usuario }) {
         ))}
       </div>
 
-      {chatSelecionado && (
+      {modalVer && chatSelecionado && (
+        <ModalVerAtendimentoInovador
+          chat={chatSelecionado}
+          onFechar={() => setModalVer(false)}
+          onAssumir={(sessao) => handleAssumirAtendimento(sessao)}
+        />
+      )}
+
+      {modalAssumir && chatSelecionado && (
         <ModalAtendimentoGaveta
           chat={chatSelecionado}
-          modo={modoModal}
+          modo="assumir"
           contagemDelay={contagemDelay}
           usuario={usuario}
-          onFechar={() => setChatSelecionado(null)}
+          onFechar={() => setModalAssumir(false)}
           onEnviarMensagem={handleEnviarMensagem}
           onEncerrar={handleEncerrarAtendimento}
         />
@@ -213,3 +246,4 @@ export default function CentralAtendimentoView({ usuario }) {
     </div>
   );
 }
+

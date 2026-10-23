@@ -20,6 +20,8 @@ import {
 import { responderPergunta } from './services/atendenteService';
 import { loginUsuario } from './services/authService';
 import { registrarMensagemCliente } from './services/chatSyncService';
+import { escutarEventosChat } from './services/liveChatBroadcast';
+
 
 import './App.css';
 
@@ -67,6 +69,29 @@ export default function App() {
       // Ignora erro
     }
   }, [mensagens]);
+  // Sincronização Simultânea Instantânea com Atendente (0ms Delay)
+  useEffect(() => {
+    const cleanup = escutarEventosChat((evento) => {
+      if (evento?.tipo === 'MENSAGEM_ATENDENTE' && evento.mensagem) {
+        setMensagens((prev) => [...prev, evento.mensagem]);
+      } else if (evento?.tipo === 'ATENDIMENTO_ENCERRADO' && evento.mensagem) {
+        setMensagens((prev) => [...prev, evento.mensagem]);
+      } else if (evento?.tipo === 'VENDA_CONCLUIDA' && evento.pedido) {
+        setMensagens((prev) => [
+          ...prev,
+          {
+            id: `venda-${Date.now()}`,
+            autor: 'assistente',
+            texto: `🎉 Compra Confirmada! Pedido ${evento.pedido.id} gerado com sucesso na Boutique Layani.`,
+            dataHora: new Date().toISOString(),
+          },
+        ]);
+      }
+    });
+
+    return () => cleanup();
+  }, []);
+
 
 
   useEffect(() => {

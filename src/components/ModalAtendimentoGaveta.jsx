@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import CheckoutVendaModal from './CheckoutVendaModal';
 
 export default function ModalAtendimentoGaveta({
   chat,
@@ -10,6 +11,7 @@ export default function ModalAtendimentoGaveta({
   onEncerrar,
 }) {
   const [inputResposta, setInputResposta] = useState('');
+  const [modalCheckout, setModalCheckout] = useState(false);
   const fimChatRef = useRef(null);
 
   useEffect(() => {
@@ -25,6 +27,13 @@ export default function ModalAtendimentoGaveta({
     setInputResposta('');
   };
 
+  const handleVendaConcluida = (pedido) => {
+    setModalCheckout(false);
+    onEnviarMensagem(
+      `🎉 Pedido ${pedido.id} gerado e aprovado com sucesso! Total: R$ ${pedido.valorTotal}. Forma: ${pedido.formaPagamento?.toUpperCase() || 'PIX'}. Sua peça já está reservada!`
+    );
+  };
+
   return (
     <div
       className="modal-chat-atendente"
@@ -38,7 +47,7 @@ export default function ModalAtendimentoGaveta({
             <div>
               <h3 className="sessao-nome">{chat.clienteNome}</h3>
               <span className="sessao-canal">
-                Status: {chat.status.toUpperCase()} • Modo: {chat.atendimentoStatus.toUpperCase()}
+                Status: {chat.status.toUpperCase()} • Atendente: {chat.atendenteNome || 'Especialista'}
               </span>
             </div>
           </div>
@@ -49,7 +58,7 @@ export default function ModalAtendimentoGaveta({
                 type="button"
                 className="btn-encerrar-atendimento"
                 onClick={onEncerrar}
-                title="Encerrar atendimento humano e devolver para o bot"
+                title="Encerrar atendimento e fechar card"
               >
                 <span aria-hidden="true">🛑</span>
                 <span>Encerrar Atendimento</span>
@@ -95,13 +104,10 @@ export default function ModalAtendimentoGaveta({
               <button
                 type="button"
                 className="btn-acao-rapida"
-                onClick={() =>
-                  setInputResposta(
-                    'Confirmando sua compra! 🎉 Calça Jeans tamanho 38 reservada com frete fixo de R$ 10,00. Total R$ 129,90. Código PED-7741.'
-                  )
-                }
+                style={{ background: '#dcfce7', color: '#166534', borderColor: '#bbf7d0' }}
+                onClick={() => setModalCheckout(true)}
               >
-                🏷️ Fechar Venda
+                🛍️ Fechar Venda (PIX / Cartão / Entrega)
               </button>
               <button
                 type="button"
@@ -133,7 +139,7 @@ export default function ModalAtendimentoGaveta({
                 className="input-resposta-atendente"
                 value={inputResposta}
                 onChange={(e) => setInputResposta(e.target.value)}
-                placeholder="Digite sua resposta personalizada para a cliente..."
+                placeholder="Digite sua resposta simultânea para a cliente..."
               />
               <button
                 type="submit"
@@ -146,6 +152,16 @@ export default function ModalAtendimentoGaveta({
           </>
         )}
       </div>
+
+      {modalCheckout && (
+        <CheckoutVendaModal
+          clienteNomePadrao={chat.clienteNome}
+          clienteEmailPadrao={chat.clienteEmail}
+          onFechar={() => setModalCheckout(false)}
+          onVendaConcluida={handleVendaConcluida}
+        />
+      )}
     </div>
   );
 }
+

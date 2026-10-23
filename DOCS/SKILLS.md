@@ -1,93 +1,58 @@
 
-# SKILLS — Boutique Layani
+# SKILLS — Boutique Layani (Versão 2.5)
 
 ## Objetivo
+Descrever as habilidades de atendimento do assistente virtual autônomo (SEM IA) e a integração com o atendimento humano especializado.
 
-Descrever as habilidades de atendimento
-que o sistema deverá implementar.
+---
 
-## Skill 1 — Consultar preços
+## Skill 1 — Consultar Preços
+- **Entrada:** Pergunta sobre o valor de um modelo específico (Camiseta, Calça Jeans, Vestido).
+- **Processamento:** Reconhecimento por palavras-chave normalizadas.
+- **Saída:** Informar o preço oficial (R$ 39,90, R$ 119,90, R$ 89,90).
 
-Entrada:
-Pergunta sobre um produto.
+## Skill 2 — Informar Horário de Funcionamento
+- **Entrada:** Dúvidas sobre horários e dias de atendimento.
+- **Saída:** A Boutique Layani funciona de segunda a sábado, das 8h às 18h.
 
-Processamento:
-Identificar o produto mencionado.
-Consultar o catálogo local.
+## Skill 3 — Informar Taxa de Entrega
+- **Entrada:** Consulta sobre frete ou envio.
+- **Saída:** A taxa fixa de entrega informada é R$ 10,00.
 
-Saída:
-Informar o preço cadastrado.
+## Skill 4 — Informar Tamanhos Disponíveis (Nova Autonomia)
+- **Entrada:** Pergunta sobre a grade de tamanhos de uma peça.
+- **Saída:**
+  - Camiseta: P, M e G (45 peças em estoque).
+  - Calça Jeans: 36, 38, 40, 42 e 44 (modelagem acinturada com lycra).
+  - Vestido: P e M (8 peças — estoque exclusivo).
 
-Exemplo:
-Cliente: Quanto custa a calça?
-Resposta: A calça jeans custa R$ 119,90.
+## Skill 5 — Listar Catálogo Completo (Nova Autonomia)
+- **Entrada:** Solicitação da lista de produtos ou opções da coleção.
+- **Saída:** Lista estruturada das 3 peças com valores e tamanhos disponíveis.
 
-Regra:
-Não inventar descontos nem promoções.
+## Skill 6 — Fechar Vendas & Gerar Pedido (Nova Autonomia)
+- **Entrada:** Intenção de compra do cliente (*"quero comprar o vestido tamanho M"*).
+- **Processamento:** Cálculo do valor com taxa fixa de entrega de R$ 10,00.
+- **Saída:** Resumo formal com código `PED-XXXX`, itens, frete, valor total e reserva imediata.
 
-## Skill 2 — Informar horário
+## Skill 7 — Reversão de Cancelamento
+- **Entrada:** Manifestação de desistência da cliente.
+- **Saída:** Acolhimento caloroso com oferta de assistência humana e cupom de frete grátis.
 
-Entrada:
-Pergunta sobre funcionamento.
+## Skill 8 — Encaminhar para Atendente com Botão WhatsApp
+- **Entrada:** Dúvidas fora de catálogo (ex: calça tamanho G, sapatos, perfumes).
+- **Saída:** *"Não tenho essa informação no momento. Por favor, continue o atendimento neste botão."* + Botão oficial de WhatsApp.
 
-Processamento:
-Consultar as informações da loja.
+## Skill 9 — Assumir Atendimento Humano Simultâneo (Atendente)
+- **Processamento:**
+  1. Sistema avisa: *"Direcionando seu atendimento para um atendente especializado..."*
+  2. Delay obrigatório de 5 segundos.
+  3. Mensagem oficial: *"[Nome do Atendente]: Olá, meu nome é [Nome do Atendente], como posso te ajudar? Insira sua dúvida abaixo."*
+  4. Comunicação instantânea (0ms delay) via BroadcastChannel.
+  5. Fechamento automático do card do assistente após 10 segundos.
 
-Saída:
-A Boutique Layani funciona de segunda
-a sábado, das 8h às 18h.
+## Skill 10 — Encerrar Atendimento & Agradecimento
+- **Processamento:** Atendente clica em "Encerrar Atendimento".
+- **Saída:** Remoção automática do card da lista ativa e envio de mensagem de agradecimento:
+  *"Atendimento com nossa especialista finalizado com muito carinho! Agradecemos por escolher a Boutique Layani. Se precisar de mais alguma coisa ou quiser tirar novas dúvidas, estou sempre por aqui à sua disposição. Tenha um dia maravilhoso e repleto de elegância! ✨🌸"*
 
-## Skill 3 — Informar entrega
-
-Entrada:
-Pergunta sobre taxa de entrega.
-
-Processamento:
-Consultar a taxa cadastrada.
-
-Saída:
-A taxa de entrega informada é R$ 10,00.
-
-Regra:
-Não informar prazos nem áreas atendidas,
-pois esses dados não foram fornecidos.
-
-## Skill 4 — Encaminhar ao humano
-
-Entrada:
-Pergunta sem resposta disponível.
-
-Processamento:
-Detectar que a informação não está cadastrada.
-
-Saída:
-Não tenho essa informação no momento.
-Por favor, consulte um atendente humano.
-
-Exemplos de encaminhamento:
-
-- Disponibilidade de estoque
-- Tamanhos
-- Prazo de entrega
-- Trocas
-- Pagamentos
-- Produtos não cadastrados
-
-## Skill 5 — Limpar conversa
-
-Entrada:
-Clique no botão Limpar conversa.
-
-Processamento:
-Remover mensagens anteriores da interface.
-
-Saída:
-Mostrar a mensagem inicial de boas-vindas.
-
-## Regras gerais
-
-- Responder com educação.
-- Ser objetivo.
-- Utilizar apenas dados cadastrados.
-- Não inventar informações.
-- Não realizar operações externas.

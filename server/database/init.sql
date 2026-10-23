@@ -89,7 +89,8 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `canal` ENUM('WhatsApp', 'Chat Virtual', 'Loja Física') NOT NULL DEFAULT 'Chat Virtual',
   `taxa_entrega` DECIMAL(10,2) NOT NULL DEFAULT 10.00,
   `valor_total` DECIMAL(10,2) NOT NULL,
-  `status` ENUM('Pendente', 'Concluído', 'Cancelado') NOT NULL DEFAULT 'Concluído',
+  `status` VARCHAR(50) NOT NULL DEFAULT 'Concluído',
+
   `motivo_cancelamento` VARCHAR(255) NULL,
   `criado_em` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT `fk_pedidos_cliente` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL,
@@ -157,6 +158,49 @@ CREATE TABLE IF NOT EXISTS `fato_motivos_cancelamento` (
   `quantidade` INT NOT NULL,
   `valor_perdido` DECIMAL(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 12. LOGS DE AUDITORIA DE ATENDIMENTO (PRISMA BI)
+CREATE TABLE IF NOT EXISTS `logs_atendimento` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `atendimento_id` VARCHAR(100) NOT NULL,
+  `atendente_nome` VARCHAR(150) NULL,
+  `evento` VARCHAR(100) NOT NULL,
+  `tempo_espera_segundos` INT DEFAULT 0,
+  `duracao_total_segundos` INT DEFAULT 0,
+  `metadados` JSON NULL,
+  `criado_em` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX `idx_logs_atend_evento` (`evento`),
+  INDEX `idx_logs_atend_criado` (`criado_em`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 13. LOGS DE COMPRAS DETALHADAS & MONITORAMENTO DE TEMPO / CANAL
+CREATE TABLE IF NOT EXISTS `logs_compras_detalhadas` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `codigo_pedido` VARCHAR(50) NOT NULL,
+  `cliente_nome` VARCHAR(150) NOT NULL,
+  `metodo_pagamento` VARCHAR(50) NOT NULL,
+  `tempo_fechamento_segundos` INT DEFAULT 0,
+  `canal_aquisicao` VARCHAR(100) DEFAULT 'Chat Virtual',
+  `termo_busca_seo` VARCHAR(150) DEFAULT 'boutique layani moda feminina',
+  `dispositivo` VARCHAR(50) DEFAULT 'Mobile',
+  `tempo_navegacao_minutos` DECIMAL(5,2) DEFAULT 3.5,
+  `valor_total` DECIMAL(10,2) NOT NULL,
+  `criado_em` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX `idx_logs_compras_codigo` (`codigo_pedido`),
+  INDEX `idx_logs_compras_metodo` (`metodo_pagamento`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 14. TELEMETRIA DE SEO & ORIGEM DE TRÁFEGO
+CREATE TABLE IF NOT EXISTS `telemetria_seo` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `pagina` VARCHAR(100) NOT NULL,
+  `termo_busca` VARCHAR(150) NOT NULL,
+  `referrer` VARCHAR(255) DEFAULT 'google.com.br',
+  `dispositivo` VARCHAR(50) DEFAULT 'Mobile',
+  `tempo_permanencia_segundos` INT DEFAULT 45,
+  `criado_em` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 SET FOREIGN_KEY_CHECKS = 1;
 -- ============================================================
