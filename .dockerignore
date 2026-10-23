@@ -1,0 +1,9 @@
+node_modules
+.git
+dev.log
+dev-err.log
+server.log
+server-err.log
+*.zip
+DOCS
+*.md

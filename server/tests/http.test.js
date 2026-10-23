@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 import http from 'http';
 import app from '../index.js';
 import { USUARIOS, JWT_SECRET } from '../data/store.js';
+import { fecharPool } from '../database/db.js';
+
 
 describe('Endpoints REST e Proteção RBAC (Somente GET) - Boutique Layani', () => {
   let server;
@@ -37,7 +39,9 @@ describe('Endpoints REST e Proteção RBAC (Somente GET) - Boutique Layani', () 
 
   afterAll(async () => {
     await new Promise((resolve) => server.close(resolve));
+    await fecharPool();
   });
+
 
   it('GET /api/estoque sem token deve retornar 401', async () => {
     const res = await fetch(`${baseUrl}/api/estoque`);

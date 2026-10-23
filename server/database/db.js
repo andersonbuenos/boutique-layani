@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const configDB = {
-  host: process.env.DB_HOST || 'localhost',
+  host: process.env.DB_HOST || '127.0.0.1',
   port: Number(process.env.DB_PORT) || 3306,
   user: process.env.DB_USER || 'layani_user',
   password: process.env.DB_PASSWORD || 'layani_pass_2026',
@@ -12,7 +12,9 @@ const configDB = {
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  connectTimeout: 2000,
 };
+
 
 let pool = null;
 let mysqlConectado = false;
@@ -43,6 +45,15 @@ export async function testarConexaoMySQL() {
 
 export function isMySQLOnline() {
   return mysqlConectado;
+}
+
+export async function fecharPool() {
+  if (pool) {
+    try {
+      await pool.end();
+      mysqlConectado = false;
+    } catch {}
+  }
 }
 
 export async function executarQuery(sql, params = []) {
