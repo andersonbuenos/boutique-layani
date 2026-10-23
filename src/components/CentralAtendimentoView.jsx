@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { SESSOES_PADRAO } from '../data/sessoesChatData';
 import CardSessaoChat from './CardSessaoChat';
 import ModalVerAtendimentoInovador from './ModalVerAtendimentoInovador';
+import ModalAtendimentoAssumido from './ModalAtendimentoAssumido';
 import { emitirEventoChat, escutarEventosChat } from '../services/liveChatBroadcast';
+
 
 import './CentralAtendimentoView.css';
 
@@ -233,9 +235,8 @@ export default function CentralAtendimentoView({ usuario }) {
       )}
 
       {modalAssumir && chatSelecionado && (
-        <ModalVerAtendimentoInovador
+        <ModalAtendimentoAssumido
           chat={chatSelecionado}
-          modo="assumir"
           contagemDelay={contagemDelay}
           usuario={usuario}
           onFechar={() => setModalAssumir(false)}
@@ -246,5 +247,6 @@ export default function CentralAtendimentoView({ usuario }) {
     </div>
   );
 }
+
 
 

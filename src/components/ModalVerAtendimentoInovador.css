@@ -37,6 +37,54 @@
   flex-wrap: wrap;
 }
 
+
+/* Tarja de Identificação no Topo: Atendente Assumiu o Atendimento */
+.tarja-topo-atendente-assumiu {
+  width: 100%;
+  background: linear-gradient(135deg, #be185d 0%, #9d174d 100%);
+  color: #ffffff;
+  padding: 0.65rem 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.tarja-info-esquerda {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.tarja-icone-coroa {
+  font-size: 1.1rem;
+}
+
+.badge-tag-humano-ativo {
+  background: rgba(255, 255, 255, 0.25);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 800;
+}
+
+.banner-atendimento-humano-conectado {
+  background: #f0fdf4;
+  border-bottom: 1px solid #bbf7d0;
+  color: #15803d;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .cliente-meta-topo {
   display: flex;
   align-items: center;

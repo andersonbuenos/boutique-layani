@@ -1,7 +1,8 @@
 import React from 'react';
-import ModalVerAtendimentoInovador from './ModalVerAtendimentoInovador';
+import ModalAtendimentoAssumido from './ModalAtendimentoAssumido';
 
 export default function ModalAtendimentoGaveta(props) {
-  return <ModalVerAtendimentoInovador {...props} modo="assumir" />;
+  return <ModalAtendimentoAssumido {...props} />;
 }
+
 
