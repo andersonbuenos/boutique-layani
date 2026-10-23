@@ -6,7 +6,7 @@ export default function PainelFichaCliente({ chat }) {
   return (
     <div className="coluna-contexto-cliente">
       <div className="card-info-cliente-box">
-        <h4>📋 Ficha da Cliente</h4>
+        <h4>Ficha da Cliente</h4>
         <div className="info-item-linha">
           <span>Cliente:</span>
           <strong>{chat.clienteNome}</strong>
@@ -26,7 +26,7 @@ export default function PainelFichaCliente({ chat }) {
       </div>
 
       <div className="card-info-cliente-box">
-        <h4>📊 Diagnóstico Prisma BI</h4>
+        <h4>Diagnóstico de Atendimento</h4>
         <div className="info-item-linha">
           <span>Intenção Atual:</span>
           <strong style={{ color: 'var(--color-primary)' }}>Consulta & Compra</strong>
@@ -47,3 +47,4 @@ export default function PainelFichaCliente({ chat }) {
     </div>
   );
 }
+

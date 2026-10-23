@@ -45,12 +45,11 @@ export default function Atendimento({
         <header className="chat-header">
           <div className="chat-title-group">
             <h2 id="chat-titulo" className="chat-title">
-              <span>🌸</span>
-              <span>Atendente Virtual Layani</span>
+              <span>Concierge Boutique Layani</span>
             </h2>
             <p className="chat-status">
               <span className="status-indicator" aria-hidden="true"></span>
-              <span>Assistente online • Dúvidas frequentes</span>
+              <span>Disponível • Consulta de catálogo e suporte</span>
             </p>
           </div>
           <button
@@ -60,10 +59,10 @@ export default function Atendimento({
             aria-label="Limpar histórico de conversa"
             title="Limpar conversa"
           >
-            <span aria-hidden="true">🗑️</span>
             <span>Limpar conversa</span>
           </button>
         </header>
+
 
         <div
           className="chat-mensagens-container"
@@ -79,10 +78,11 @@ export default function Atendimento({
             ))}
 
             {isDigitando && (
-              <li className="mensagem-digitando" aria-label="Atendente está digitando">
+              <li className="mensagem-digitando" aria-label="Concierge está digitando">
                 <div className="mensagem-avatar" aria-hidden="true">
-                  🌸
+                  L
                 </div>
+
                 <div className="digitando-bolha">
                   <span className="digitando-ponto"></span>
                   <span className="digitando-ponto"></span>

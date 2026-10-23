@@ -40,15 +40,14 @@ export default function ModalAtendimentoAssumido({
       role="presentation"
     >
       <div className="modal-inovador-card" role="dialog" aria-modal="true">
-        {/* Tarja Superior em Destaque: Atendente Assumiu o Atendimento */}
+        {/* Tarja Superior Clean */}
         <div className="tarja-topo-atendente-assumiu">
           <div className="tarja-info-esquerda">
-            <span className="tarja-icone-coroa" aria-hidden="true">👑</span>
             <span>
-              Atendimento - Atendente <strong>{nomeAtendente}</strong> assumiu o atendimento
+              Atendimento Direto — Atendente <strong>{nomeAtendente}</strong>
             </span>
           </div>
-          <span className="badge-tag-humano-ativo">Atendimento Humano Ativo</span>
+          <span className="badge-tag-humano-ativo">Sessão Ativa</span>
         </div>
 
         {/* Header Estilo Console de Concierge de Alta Costura */}
@@ -62,7 +61,7 @@ export default function ModalAtendimentoAssumido({
                 <span>{chat.clienteNome}</span>
                 <span className={`status-badge-chat ${isOnline ? 'badge-on' : 'badge-off'}`}>
                   <span className={isOnline ? 'alert-dot-pulse' : 'alert-dot-off'}></span>
-                  <span>{isOnline ? 'CHAT AO VIVO' : 'SESSÃO INATIVA'}</span>
+                  <span>{isOnline ? 'Ao Vivo' : 'Inativo'}</span>
                 </span>
               </h3>
               <p className="cliente-subtitulo">
@@ -74,7 +73,7 @@ export default function ModalAtendimentoAssumido({
           <div className="acoes-header-inovador">
             <span className="badge-conexao-live">
               <span className="alert-dot-pulse"></span>
-              <span>Conexão Simultânea (0ms)</span>
+              <span>Tempo Real (0ms)</span>
             </span>
 
             {onEncerrar && (
@@ -84,7 +83,6 @@ export default function ModalAtendimentoAssumido({
                 onClick={onEncerrar}
                 title="Encerrar atendimento humano e fechar card"
               >
-                <span aria-hidden="true">🛑</span>
                 <span>Encerrar Atendimento</span>
               </button>
             )}
@@ -103,26 +101,15 @@ export default function ModalAtendimentoAssumido({
         {/* Corpo com Duas Colunas: Timeline da Conversa + Painel da Cliente */}
         <div className="modal-inovador-corpo">
           <div className="coluna-chat-conversa">
-            {/* Banner de Direcionamento com Delay Regressivo */}
-            {contagemDelay > 0 ? (
-              <div className="banner-delay-5s" role="alert">
-                <span className="spinner-mini"></span>
-                <span>
-                  Direcionando atendimento para {nomeAtendente}... Apresentação em{' '}
-                  {contagemDelay} segundo(s).
-                </span>
-              </div>
-            ) : (
-              <div className="banner-atendimento-humano-conectado">
-                <span aria-hidden="true">✨</span>
-                <span>
-                  Atendimento assumido com sucesso! Atendente <strong>{nomeAtendente}</strong> conectado(a) em tempo real.
-                </span>
-              </div>
-            )}
+            <div className="banner-atendimento-humano-conectado">
+              <span>
+                Atendente <strong>{nomeAtendente}</strong> conectada ao atendimento.
+              </span>
+            </div>
 
             {/* Timeline da Conversa */}
             <div className="lista-mensagens-inovadora">
+
               {chat.mensagens.map((msg, i) => (
                 <div key={i} className={`msg-item-modal msg-${msg.autor}`}>
                   <div className="msg-bolha-texto">{msg.texto}</div>

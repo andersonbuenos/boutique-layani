@@ -21,7 +21,6 @@ describe('Endpoints REST e Proteção RBAC (Somente GET) - Boutique Layani', () 
 
     const admin = USUARIOS.find((u) => u.role === 'admin');
     const atendente = USUARIOS.find((u) => u.role === 'atendente');
-    const cliente = USUARIOS.find((u) => u.role === 'cliente');
 
     tokenAdmin = jwt.sign(
       { id: admin.id, nome: admin.nome, email: admin.email, role: 'admin' },
@@ -32,9 +31,10 @@ describe('Endpoints REST e Proteção RBAC (Somente GET) - Boutique Layani', () 
       JWT_SECRET
     );
     tokenCliente = jwt.sign(
-      { id: cliente.id, nome: cliente.nome, email: cliente.email, role: 'cliente' },
+      { id: 'usr-cli-temp', nome: 'Cliente Simulado', email: 'cliente.teste@boutique.com', role: 'cliente' },
       JWT_SECRET
     );
+
   });
 
   afterAll(async () => {

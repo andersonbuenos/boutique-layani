@@ -14,13 +14,6 @@ export default function AuthModal({
   const [erro, setErro] = useState('');
   const [carregando, setCarregando] = useState(false);
 
-  const preencherCredencialTeste = (emailTeste, senhaTeste) => {
-    setEmail(emailTeste);
-    setSenha(senhaTeste);
-    setModo('login');
-    setErro('');
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErro('');
@@ -42,7 +35,6 @@ export default function AuthModal({
       setCarregando(false);
     }
   };
-
 
   return (
     <div
@@ -66,12 +58,11 @@ export default function AuthModal({
         </button>
 
         <div className="auth-modal-header">
-          <span className="auth-modal-icon">🌸</span>
           <h2 id="auth-modal-titulo" className="auth-modal-title">
-            {modo === 'login' ? 'Acessar o Sistema' : 'Criar Nova Conta'}
+            {modo === 'login' ? 'Identificação' : 'Criar Nova Conta'}
           </h2>
           <p className="auth-modal-subtitle">
-            Boutique Layani • Controle de Acesso Seguro (JWT)
+            Boutique Layani • Controle de Acesso Restrito
           </p>
         </div>
 
@@ -86,7 +77,7 @@ export default function AuthModal({
               setErro('');
             }}
           >
-            Fazer Login
+            Entrar
           </button>
           <button
             type="button"
@@ -98,50 +89,9 @@ export default function AuthModal({
               setErro('');
             }}
           >
-            Cadastrar-se
+            Cadastrar
           </button>
         </div>
-
-        {modo === 'login' && (
-          <div className="auth-atalhos-teste">
-            <span className="atalhos-rotulo">Acesso rápido (3 Usuários Teste):</span>
-            <div className="atalhos-botoes">
-              <button
-                type="button"
-                className="btn-atalho-chip chip-admin"
-                onClick={() =>
-                  preencherCredencialTeste(
-                    'admin@boutiquelayani.com.br',
-                    'Admin@Layani2026'
-                  )
-                }
-              >
-                👑 Admin
-              </button>
-              <button
-                type="button"
-                className="btn-atalho-chip chip-atendente"
-                onClick={() =>
-                  preencherCredencialTeste(
-                    'atendente@boutiquelayani.com.br',
-                    'Atendente@2026'
-                  )
-                }
-              >
-                💼 Atendente
-              </button>
-              <button
-                type="button"
-                className="btn-atalho-chip chip-cliente"
-                onClick={() =>
-                  preencherCredencialTeste('cliente@gmail.com', 'Cliente@2026')
-                }
-              >
-                🛍️ Cliente
-              </button>
-            </div>
-          </div>
-        )}
 
         {erro && <div className="auth-alerta-erro" role="alert">{erro}</div>}
 
@@ -156,6 +106,7 @@ export default function AuthModal({
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
                 placeholder="Seu nome"
+                autoComplete="name"
               />
             </div>
           )}
@@ -168,7 +119,8 @@ export default function AuthModal({
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="seuemail@exemplo.com"
+              placeholder="seu.email@exemplo.com"
+              autoComplete="email"
             />
           </div>
 
@@ -181,6 +133,7 @@ export default function AuthModal({
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               placeholder="••••••••"
+              autoComplete={modo === 'login' ? 'current-password' : 'new-password'}
             />
           </div>
 
@@ -190,9 +143,9 @@ export default function AuthModal({
             disabled={carregando}
           >
             {carregando
-              ? 'Conectando...'
+              ? 'Validando...'
               : modo === 'login'
-              ? 'Entrar no Sistema'
+              ? 'Acessar Plataforma'
               : 'Concluir Cadastro'}
           </button>
         </form>
@@ -200,3 +153,4 @@ export default function AuthModal({
     </div>
   );
 }
+

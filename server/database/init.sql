@@ -214,10 +214,10 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 -- 1. SEED DE USUÁRIOS (Hashes bcrypt idênticos aos do store.js)
 INSERT INTO `usuarios` (`id`, `uuid`, `nome`, `email`, `senha_hash`, `role`) VALUES
-(1, 'usr-admin-1', 'Administradora Layani', 'admin@boutiquelayani.com.br', '$2a$10$7Zrqc1kHQyW8P4ZqB5QZ3eC3Z3Y.9Kx1l0kXzY2.kP1ZqB5QZ3eC3', 'admin'),
-(2, 'usr-atendente-1', 'Camila Atendente', 'atendente@boutiquelayani.com.br', '$2a$10$7Zrqc1kHQyW8P4ZqB5QZ3eC3Z3Y.9Kx1l0kXzY2.kP1ZqB5QZ3eC3', 'atendente'),
-(3, 'usr-cliente-1', 'Juliana Silva', 'cliente@gmail.com', '$2a$10$7Zrqc1kHQyW8P4ZqB5QZ3eC3Z3Y.9Kx1l0kXzY2.kP1ZqB5QZ3eC3', 'cliente')
+(1, 'usr-admin-1', 'Administrador Layani', 'admin@boutiquelayani.com.br', '$2a$10$7Zrqc1kHQyW8P4ZqB5QZ3eC3Z3Y.9Kx1l0kXzY2.kP1ZqB5QZ3eC3', 'admin'),
+(2, 'usr-atendente-1', 'Camila Atendente', 'atendente@boutiquelayani.com.br', '$2a$10$7Zrqc1kHQyW8P4ZqB5QZ3eC3Z3Y.9Kx1l0kXzY2.kP1ZqB5QZ3eC3', 'atendente')
 ON DUPLICATE KEY UPDATE `nome` = VALUES(`nome`);
+
 
 -- 2. SEED DE CATEGORIAS
 INSERT INTO `categorias` (`id`, `nome`, `descricao`) VALUES

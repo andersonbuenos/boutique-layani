@@ -15,7 +15,9 @@ export default function CardSessaoChat({
     >
       <div className="sessao-header">
         <div className="sessao-cliente-info">
-          <div className="sessao-avatar" aria-hidden="true">👤</div>
+          <div className="sessao-avatar" aria-hidden="true">
+            {sessao.clienteNome?.charAt(0) || 'C'}
+          </div>
           <div>
             <h3 className="sessao-nome">{sessao.clienteNome}</h3>
             <span className="sessao-canal">{sessao.canal}</span>
@@ -40,12 +42,12 @@ export default function CardSessaoChat({
             ></span>
             <span>
               {isDirecionando
-                ? 'Direcionando (5s)'
+                ? 'Conectando'
                 : isHumano
                 ? `Com ${sessao.atendenteNome || 'Atendente'}`
                 : isOnline
-                ? 'CHAT ON'
-                : 'CHAT OFF'}
+                ? 'Online'
+                : 'Inativo'}
             </span>
           </span>
         </div>
@@ -60,21 +62,18 @@ export default function CardSessaoChat({
       </div>
 
       <div className="sessao-atendente-tag">
-        <span aria-hidden="true">💼</span>
         <span>
           Responsável: <strong>{sessao.atendenteNome || 'Assistente Virtual'}</strong>
         </span>
       </div>
 
-      {/* Os Dois Botões Solicitados: Ver Atendimento e Assumir Atendimento */}
       <div className="sessao-botoes-acoes">
         <button
           type="button"
           className="btn-ver-atendimento"
           onClick={() => onVerAtendimento(sessao)}
         >
-          <span aria-hidden="true">👁️</span>
-          <span>Ver atendimento</span>
+          <span>Ver Atendimento</span>
         </button>
 
         <button
@@ -82,10 +81,10 @@ export default function CardSessaoChat({
           className={`btn-assumir-atendimento ${isHumano ? 'ja-assumido' : ''}`}
           onClick={() => onAssumirAtendimento(sessao)}
         >
-          <span aria-hidden="true">⚡</span>
-          <span>{isHumano ? 'Abrir conversa' : 'Assumir atendimento'}</span>
+          <span>{isHumano ? 'Abrir Conversa' : 'Assumir Atendimento'}</span>
         </button>
       </div>
     </article>
   );
 }
+

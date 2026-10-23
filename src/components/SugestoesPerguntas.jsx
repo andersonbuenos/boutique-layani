@@ -6,8 +6,7 @@ export default function SugestoesPerguntas({ onSelecionarPergunta, desabilitado 
     <div className="sugestoes-container" aria-label="Perguntas rápidas sugeridas">
       <div className="sugestoes-cabecalho">
         <span className="sugestoes-rotulo">
-          <span aria-hidden="true">💡</span>
-          <span>Dúvidas Frequentes Rápidas</span>
+          <span>Dúvidas Frequentes</span>
         </span>
       </div>
       <div className="sugestoes-lista" role="group" aria-label="Opções de perguntas">
@@ -26,4 +25,5 @@ export default function SugestoesPerguntas({ onSelecionarPergunta, desabilitado 
     </div>
   );
 }
+
 

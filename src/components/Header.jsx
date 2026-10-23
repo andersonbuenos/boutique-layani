@@ -7,7 +7,7 @@ export default function Header() {
       <div className="header-container">
         <div className="brand">
           <div className="brand-logo" aria-hidden="true">
-            🌸
+            <span>L</span>
           </div>
           <div>
             <h1 className="brand-title">{LOJA.nome}</h1>
@@ -20,11 +20,12 @@ export default function Header() {
         >
           <span className="status-dot" aria-hidden="true"></span>
           <span>
-            {LOJA.diasFuncionamento}: {LOJA.horarioAbertura} às {LOJA.horarioFechamento}
+            {LOJA.diasFuncionamento} • {LOJA.horarioAbertura} às {LOJA.horarioFechamento}
           </span>
         </div>
       </div>
     </header>
   );
 }
+
 

@@ -43,7 +43,7 @@ export default function ModalVerAtendimentoInovador({
       role="presentation"
     >
       <div className="modal-inovador-card" role="dialog" aria-modal="true">
-        {/* Header Inovador estilo Console de Concierge de Alta Costura */}
+        {/* Header Estilo Console de Concierge de Alta Costura */}
         <header className="modal-inovador-header">
           <div className="cliente-meta-topo">
             <div className="cliente-avatar-grande" aria-hidden="true">
@@ -54,7 +54,7 @@ export default function ModalVerAtendimentoInovador({
                 <span>{chat.clienteNome}</span>
                 <span className={`status-badge-chat ${isOnline ? 'badge-on' : 'badge-off'}`}>
                   <span className={isOnline ? 'alert-dot-pulse' : 'alert-dot-off'}></span>
-                  <span>{isOnline ? 'CHAT AO VIVO' : 'SESSÃO INATIVA'}</span>
+                  <span>{isOnline ? 'Ao Vivo' : 'Inativo'}</span>
                 </span>
               </h3>
               <p className="cliente-subtitulo">
@@ -66,29 +66,16 @@ export default function ModalVerAtendimentoInovador({
           <div className="acoes-header-inovador">
             <span className="badge-conexao-live">
               <span className="alert-dot-pulse"></span>
-              <span>Conexão Simultânea (0ms)</span>
+              <span>Tempo Real (0ms)</span>
             </span>
 
-            {!isModoAssumir && onAssumir && (
+            {onAssumir && (
               <button
                 type="button"
                 className="btn-assumir-inovador"
                 onClick={() => onAssumir(chat)}
               >
-                <span>⚡</span>
                 <span>Assumir Atendimento</span>
-              </button>
-            )}
-
-            {isModoAssumir && onEncerrar && (
-              <button
-                type="button"
-                className="btn-encerrar-atendimento"
-                onClick={onEncerrar}
-                title="Encerrar atendimento humano e fechar card"
-              >
-                <span aria-hidden="true">🛑</span>
-                <span>Encerrar Atendimento</span>
               </button>
             )}
 
@@ -102,6 +89,7 @@ export default function ModalVerAtendimentoInovador({
             </button>
           </div>
         </header>
+
 
         {/* Corpo com Duas Colunas: Timeline da Conversa + Painel da Cliente */}
         <div className="modal-inovador-corpo">

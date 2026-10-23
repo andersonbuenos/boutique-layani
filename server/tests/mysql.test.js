@@ -26,19 +26,19 @@ describe('Modelagem do Banco de Dados Relacional MySQL e Docker - Prisma & Ciphe
     expect(sql).toContain('CREATE TABLE IF NOT EXISTS `fato_motivos_cancelamento`');
   });
 
-  it('o arquivo seed.sql deve conter os dados dos 3 usuários, 3 produtos e métricas do amCharts', () => {
+  it('o arquivo seed.sql deve conter os dados dos usuários admin e atendente, 3 produtos e métricas do amCharts', () => {
     expect(fs.existsSync(seedPath)).toBe(true);
     const sql = fs.readFileSync(seedPath, 'utf-8');
 
     expect(sql).toContain('admin@boutiquelayani.com.br');
     expect(sql).toContain('atendente@boutiquelayani.com.br');
-    expect(sql).toContain('cliente@gmail.com');
     expect(sql).toContain('LAY-CAM-001');
     expect(sql).toContain('LAY-CAL-002');
     expect(sql).toContain('LAY-VES-003');
     expect(sql).toContain('Mai/26');
     expect(sql).toContain('Out/26');
   });
+
 
   it('o docker-compose.yml deve conter o serviço mysql 8.0 com volume persistente e init.sql', () => {
     expect(fs.existsSync(dockerComposePath)).toBe(true);

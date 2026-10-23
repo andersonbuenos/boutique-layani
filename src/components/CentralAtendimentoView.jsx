@@ -69,72 +69,43 @@ export default function CentralAtendimentoView({ usuario }) {
 
   const handleAssumirAtendimento = (sessao) => {
     setModalVer(false);
-    const nomeAtd = usuario?.nome || 'Atendente';
+    const nomeAtd = usuario?.nome || 'Camila Atendente';
     const agora = horaAgora();
 
     const cardId = `chat-atd-${sessao.id}`;
+    const msgAtd = {
+      id: `atd-${Date.now()}`,
+      autor: 'atendente',
+      autorNome: nomeAtd,
+      texto: `Olá! Sou ${nomeAtd}. Como posso auxiliar você hoje?`,
+      dataHora: agora,
+    };
+
     const cardAtendente = {
       ...sessao,
       id: cardId,
       status: 'on',
-      atendimentoStatus: 'direcionando',
+      atendimentoStatus: 'humano',
       atendenteNome: nomeAtd,
-      mensagens: [
-        ...sessao.mensagens,
-        {
-          id: `sys-${Date.now()}`,
-          autor: 'sistema',
-          autorNome: 'Sistema',
-          texto: 'Direcionando seu atendimento para um atendente especializado...',
-          dataHora: agora,
-        },
-      ],
+      mensagens: [...sessao.mensagens, msgAtd],
+      ultimaMensagem: msgAtd.texto,
     };
 
     setChatSelecionado(cardAtendente);
+    setContagemDelay(0);
     setModalAssumir(true);
     setSessoes((p) => [cardAtendente, ...p.filter((s) => s.id !== sessao.id && s.id !== cardId)]);
 
-    // Requisito 8: Fecha o card antigo do assistente após 10 segundos
     setTimeout(() => {
       setSessoes((p) => p.filter((s) => s.id !== sessao.id));
     }, 10000);
 
-    setContagemDelay(5);
-    const timer = setInterval(() => {
-      setContagemDelay((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          const hora = horaAgora();
-          const msgAtd = {
-            id: `atd-${Date.now()}`,
-            autor: 'atendente',
-            autorNome: nomeAtd,
-            texto: `${nomeAtd}: Olá, meu nome é ${nomeAtd}, como posso te ajudar? Insira sua dúvida abaixo.`,
-            dataHora: hora,
-          };
-
-          setSessoes((p) =>
-            p.map((s) => {
-              if (s.id === cardId) {
-                const finalS = {
-                  ...s,
-                  atendimentoStatus: 'humano',
-                  mensagens: [...s.mensagens, msgAtd],
-                  ultimaMensagem: msgAtd.texto,
-                };
-                setChatSelecionado(finalS);
-                emitirEventoChat({ tipo: 'ATENDENTE_ASSUMIU', sessao: finalS });
-                return finalS;
-              }
-              return s;
-            })
-          );
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+    emitirEventoChat({
+      tipo: 'ATENDIMENTO_ASSUMIDO',
+      sessaoId: cardId,
+      atendenteNome: nomeAtd,
+      mensagem: msgAtd,
+    });
   };
 
   const handleEnviarMensagem = (texto) => {
@@ -197,8 +168,8 @@ export default function CentralAtendimentoView({ usuario }) {
     <div className="central-atendimento-container">
       <div className="central-header">
         <div>
-          <span className="central-badge-topo">🔴 Central de Atendimentos ao Vivo</span>
-          <h2 className="central-titulo">Painel de Chats dos Clientes</h2>
+          <span className="central-badge-topo">Central de Atendimento</span>
+          <h2 className="central-titulo">Painel de Conversas</h2>
           <p className="central-subtitulo">
             Acompanhe conversas em tempo real, veja mensagens e assuma o atendimento com 1 clique.
           </p>
@@ -210,7 +181,7 @@ export default function CentralAtendimentoView({ usuario }) {
             <span>{totalAtivos} Chat(s) Online</span>
           </div>
           <div className="kpi-mini-card">
-            <span>📁 {sessoes.length} Sessões Ativas</span>
+            <span>{sessoes.length} Sessões Registradas</span>
           </div>
         </div>
       </div>

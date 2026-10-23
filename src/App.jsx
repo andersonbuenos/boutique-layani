@@ -41,9 +41,10 @@ export default function App() {
   });
 
   const [token, setToken] = useState(() => localStorage.getItem(STORAGE_TOKEN) || '');
-  const [telaAtiva, setTelaAtiva] = useState(() => (usuario ? 'loja' : 'portal'));
+  const [telaAtiva, setTelaAtiva] = useState('loja');
   const [modalAuth, setModalAuth] = useState(false);
   const [modoAuth, setModoAuth] = useState('login');
+
 
   const [mensagens, setMensagens] = useState(() => {
     try {
@@ -129,18 +130,9 @@ export default function App() {
     } catch {
       // Ignora erro
     }
-    setTelaAtiva('portal');
+    setTelaAtiva('loja');
   };
 
-  const handleLoginRapido = async (email, senha) => {
-    try {
-      const data = await loginUsuario(email, senha);
-      handleSucessoLogin(data.usuario, data.token);
-    } catch {
-      setModoAuth('login');
-      setModalAuth(true);
-    }
-  };
 
 
   const handleEnviarMensagem = (textoPergunta) => {
@@ -234,7 +226,6 @@ export default function App() {
               setModalAuth(true);
             }}
             onVerLoja={() => setTelaAtiva('loja')}
-            onLoginRapido={handleLoginRapido}
           />
         )}
 
@@ -242,18 +233,17 @@ export default function App() {
           <>
             <aside className="banner-info" aria-label="Informações essenciais da loja">
               <div className="banner-item">
-                <span aria-hidden="true">🕒</span>
                 <span>
-                  <strong>Horário de Funcionamento:</strong> {LOJA.diasFuncionamento}, das {LOJA.horarioAbertura} às {LOJA.horarioFechamento}
+                  <strong>Atendimento:</strong> {LOJA.diasFuncionamento}, das {LOJA.horarioAbertura} às {LOJA.horarioFechamento}
                 </span>
               </div>
               <div className="banner-item">
-                <span aria-hidden="true">🛵</span>
                 <span>
-                  <strong>Taxa Fixa de Entrega:</strong> {formatarPreco(LOJA.taxaEntrega)}
+                  <strong>Entrega Exclusiva:</strong> {formatarPreco(LOJA.taxaEntrega)} (Taxa fixa regional)
                 </span>
               </div>
             </aside>
+
 
             <Catalogo
               onConsultarPreco={handleConsultarPrecoCatalogo}

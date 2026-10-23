@@ -1,9 +1,8 @@
-// Credenciais de contingência para garantir que os 3 usuários sempre consigam logar
-// mesmo se a API backend estiver offline ou rodando em modo estático no Render.
+// Credenciais oficiais da aplicação (Admin e Atendente)
 const USUARIOS_DEMO = [
   {
     id: 'usr-admin-1',
-    nome: 'Administradora Layani',
+    nome: 'Administrador Layani',
     email: 'admin@boutiquelayani.com.br',
     senha: 'Admin@Layani2026',
     role: 'admin',
@@ -15,14 +14,8 @@ const USUARIOS_DEMO = [
     senha: 'Atendente@2026',
     role: 'atendente',
   },
-  {
-    id: 'usr-cliente-1',
-    nome: 'Juliana Silva',
-    email: 'cliente@gmail.com',
-    senha: 'Cliente@2026',
-    role: 'cliente',
-  },
 ];
+
 
 export async function loginUsuario(email, senha) {
   try {

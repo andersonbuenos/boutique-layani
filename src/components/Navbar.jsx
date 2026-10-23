@@ -12,9 +12,9 @@ export default function Navbar({
   const isAtendente = usuario?.role === 'atendente';
 
   const roleLabels = {
-    admin: { label: 'Administradora', badge: 'badge-admin', icon: '👑' },
-    atendente: { label: 'Atendente', badge: 'badge-atendente', icon: '💼' },
-    cliente: { label: 'Cliente', badge: 'badge-cliente', icon: '🛍️' },
+    admin: { label: 'Administrador', badge: 'badge-admin' },
+    atendente: { label: 'Atendente', badge: 'badge-atendente' },
+    cliente: { label: 'Cliente', badge: 'badge-cliente' },
   };
 
   const currentRole = usuario ? roleLabels[usuario.role] : null;
@@ -23,24 +23,22 @@ export default function Navbar({
     <nav className="main-navbar" aria-label="Navegação do sistema">
       <div className="navbar-container">
         <div className="navbar-links">
-          {/* Tela de Apresentação / Portal */}
-          <button
-            type="button"
-            className={`nav-btn ${telaAtiva === 'portal' ? 'ativo' : ''}`}
-            onClick={() => onMudarTela('portal')}
-          >
-            <span aria-hidden="true">✨</span>
-            <span>Apresentação</span>
-          </button>
-
           {/* Tela Principal da Loja (Catálogo & Chat) - Acessível para todos */}
           <button
             type="button"
             className={`nav-btn ${telaAtiva === 'loja' ? 'ativo' : ''}`}
             onClick={() => onMudarTela('loja')}
           >
-            <span aria-hidden="true">👗</span>
             <span>Catálogo & Chat</span>
+          </button>
+
+          {/* Tela de Apresentação Institucional */}
+          <button
+            type="button"
+            className={`nav-btn ${telaAtiva === 'portal' ? 'ativo' : ''}`}
+            onClick={() => onMudarTela('portal')}
+          >
+            <span>Conceito</span>
           </button>
 
           {/* Controle de Estoque - Acessível para Admin e Atendente */}
@@ -50,10 +48,10 @@ export default function Navbar({
               className={`nav-btn ${telaAtiva === 'estoque' ? 'ativo' : ''}`}
               onClick={() => onMudarTela('estoque')}
             >
-              <span aria-hidden="true">📦</span>
               <span>Estoque</span>
             </button>
           )}
+
           {/* Central de Atendimentos ao Vivo - Acessível para Admin e Atendente */}
           {(isAdmin || isAtendente) && (
             <button
@@ -66,7 +64,6 @@ export default function Navbar({
             </button>
           )}
 
-
           {/* Vendas - Acessível apenas para Admin */}
           {isAdmin && (
             <button
@@ -74,7 +71,6 @@ export default function Navbar({
               className={`nav-btn ${telaAtiva === 'vendas' ? 'ativo' : ''}`}
               onClick={() => onMudarTela('vendas')}
             >
-              <span aria-hidden="true">💰</span>
               <span>Vendas</span>
             </button>
           )}
@@ -86,22 +82,20 @@ export default function Navbar({
               className={`nav-btn ${telaAtiva === 'dashboard' ? 'ativo' : ''}`}
               onClick={() => onMudarTela('dashboard')}
             >
-              <span aria-hidden="true">📊</span>
               <span>Dashboard</span>
             </button>
           )}
 
-          {/* Swagger API - Link especial direto para Admin */}
+          {/* Swagger API - Link direto para Admin */}
           {isAdmin && usuario?.token && (
             <a
               href={`/api-docs?token=${usuario.token}`}
               target="_blank"
               rel="noopener noreferrer"
               className="nav-btn nav-btn-swagger"
-              title="Abrir documentação interativa Swagger com autenticação de Admin"
+              title="Documentação OpenAPI Swagger"
             >
-              <span aria-hidden="true">🔒</span>
-              <span>Swagger (GET) ↗</span>
+              <span>Swagger API ↗</span>
             </a>
           )}
         </div>
@@ -110,7 +104,6 @@ export default function Navbar({
           {usuario ? (
             <div className="user-profile-badge">
               <span className={`role-badge ${currentRole?.badge}`}>
-                <span aria-hidden="true">{currentRole?.icon}</span>
                 <span>{currentRole?.label}</span>
               </span>
               <span className="user-name" title={usuario.email}>
@@ -124,7 +117,6 @@ export default function Navbar({
                 title="Sair do sistema"
               >
                 <span>Sair</span>
-                <span aria-hidden="true">🚪</span>
               </button>
             </div>
           ) : (
@@ -133,8 +125,7 @@ export default function Navbar({
               className="btn-entrar-nav"
               onClick={onAbrirAuth}
             >
-              <span aria-hidden="true">🔐</span>
-              <span>Entrar / Cadastrar</span>
+              <span>Acessar Plataforma</span>
             </button>
           )}
         </div>
@@ -142,3 +133,4 @@ export default function Navbar({
     </nav>
   );
 }
+

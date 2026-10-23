@@ -9,7 +9,7 @@ const salt = bcrypt.genSaltSync(10);
 export const USUARIOS = [
   {
     id: 'usr-admin-1',
-    nome: 'Administradora Layani',
+    nome: 'Administrador Layani',
     email: 'admin@boutiquelayani.com.br',
     senhaHash: bcrypt.hashSync('Admin@Layani2026', salt),
     role: 'admin',
@@ -23,15 +23,8 @@ export const USUARIOS = [
     role: 'atendente',
     criadoEm: '2026-02-15T14:30:00.000Z',
   },
-  {
-    id: 'usr-cliente-1',
-    nome: 'Juliana Silva',
-    email: 'cliente@gmail.com',
-    senhaHash: bcrypt.hashSync('Cliente@2026', salt),
-    role: 'cliente',
-    criadoEm: '2026-03-20T16:00:00.000Z',
-  },
 ];
+
 
 export const ESTOQUE = [
   {

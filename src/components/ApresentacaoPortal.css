@@ -108,118 +108,65 @@
   box-shadow: var(--shadow-md);
 }
 
-.portal-link-loja {
-  margin-bottom: 2.75rem;
-}
-
-.btn-link-catalogo {
-  background: transparent;
-  border: none;
+/* Pilares Institucionais Clean */
+.btn-portal-catalogo {
+  flex: 1;
+  min-width: 240px;
+  background: #fdf2f8;
   color: var(--color-primary);
-  font-size: 0.95rem;
-  font-weight: 600;
+  border: 1.5px solid #fbcfe8;
+  border-radius: var(--radius-md);
+  padding: 0.95rem 1.5rem;
+  font-size: 1.02rem;
+  font-weight: 700;
   cursor: pointer;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.3rem;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  justify-content: center;
+  min-height: 52px;
+  transition: all 0.25s ease;
 }
 
-.btn-link-catalogo:hover {
-  color: var(--color-primary-dark);
+.btn-portal-catalogo:hover {
+  background: #fce7f3;
+  transform: translateY(-2px);
 }
 
-/* Card dos Perfis de Teste */
-.portal-card-perfis {
-  background: #ffffff;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 1.75rem 1.5rem;
+.portal-pilares-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
   width: 100%;
-  box-shadow: var(--shadow-md);
+  margin-top: 2rem;
   text-align: left;
 }
 
-.perfis-header {
-  margin-bottom: 1.25rem;
-}
-
-.perfis-header h3 {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--color-text-main);
-  margin-bottom: 0.25rem;
-}
-
-.perfis-header p {
-  font-size: 0.88rem;
-  color: var(--color-text-light);
-}
-
-.perfis-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1rem;
-}
-
-.perfil-card {
-  border: 1.5px solid var(--color-border);
+.pilar-card {
+  background: #ffffff;
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 1rem;
-  display: flex;
-  gap: 0.85rem;
-  align-items: flex-start;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background: #fafaf9;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s ease;
 }
 
-.perfil-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+.pilar-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(157, 23, 77, 0.08);
+  border-color: #fbcfe8;
 }
 
-.perfil-admin:hover {
-  border-color: #9d174d;
-  background: #fdf2f8;
-}
-
-.perfil-atendente:hover {
-  border-color: #0284c7;
-  background: #f0f9ff;
-}
-
-.perfil-cliente:hover {
-  border-color: #15803d;
-  background: #f0fdf4;
-}
-
-.perfil-icon {
-  font-size: 1.8rem;
-  line-height: 1;
-}
-
-.perfil-info h4 {
-  font-size: 0.98rem;
+.pilar-card h4 {
+  font-size: 1.05rem;
   font-weight: 800;
-  color: var(--color-text-main);
-  margin-bottom: 0.25rem;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
 }
 
-.perfil-permissao {
-  font-size: 0.82rem;
+.pilar-card p {
+  font-size: 0.9rem;
   color: var(--color-text-muted);
-  line-height: 1.45;
-  margin-bottom: 0.45rem;
-}
-
-.perfil-card code {
-  font-size: 0.76rem;
-  background: rgba(0, 0, 0, 0.05);
-  padding: 0.2rem 0.45rem;
-  border-radius: 4px;
-  display: inline-block;
+  line-height: 1.55;
 }
 
 @media (max-width: 640px) {
@@ -232,7 +179,9 @@
   }
 
   .btn-portal-login,
-  .btn-portal-cadastro {
+  .btn-portal-cadastro,
+  .btn-portal-catalogo {
     width: 100%;
   }
 }
+
