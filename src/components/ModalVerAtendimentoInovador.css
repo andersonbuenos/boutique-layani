@@ -177,6 +177,71 @@
   align-items: center;
 }
 
+/* Área Interativa de Atendente no Modal Inovador */
+.rodape-acoes-atendente {
+  background: #ffffff;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+}
+
+.acoes-rapidas-inovador {
+  padding: 0.6rem 1rem;
+  background: #fdfafb;
+  border-bottom: 1px solid #fce7f3;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+}
+
+.form-chat-inovador {
+  padding: 0.75rem 1rem;
+  display: flex;
+  gap: 0.5rem;
+  background: #ffffff;
+}
+
+.input-chat-inovador {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.92rem;
+  background: #fafaf9;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-chat-inovador:focus {
+  border-color: var(--color-primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(157, 23, 77, 0.12);
+}
+
+.btn-enviar-inovador {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.7rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(157, 23, 77, 0.2);
+  transition: all 0.2s ease;
+}
+
+.btn-enviar-inovador:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.btn-enviar-inovador:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
 @media (max-width: 820px) {
   .modal-inovador-corpo {
     grid-template-columns: 1fr;

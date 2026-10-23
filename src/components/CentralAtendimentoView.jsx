@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { SESSOES_PADRAO } from '../data/sessoesChatData';
 import CardSessaoChat from './CardSessaoChat';
-import ModalAtendimentoGaveta from './ModalAtendimentoGaveta';
 import ModalVerAtendimentoInovador from './ModalVerAtendimentoInovador';
 import { emitirEventoChat, escutarEventosChat } from '../services/liveChatBroadcast';
+
 import './CentralAtendimentoView.css';
 
 const horaAgora = () =>
@@ -233,7 +233,7 @@ export default function CentralAtendimentoView({ usuario }) {
       )}
 
       {modalAssumir && chatSelecionado && (
-        <ModalAtendimentoGaveta
+        <ModalVerAtendimentoInovador
           chat={chatSelecionado}
           modo="assumir"
           contagemDelay={contagemDelay}
@@ -246,4 +246,5 @@ export default function CentralAtendimentoView({ usuario }) {
     </div>
   );
 }
+
 

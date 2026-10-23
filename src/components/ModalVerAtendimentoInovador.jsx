@@ -1,21 +1,40 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import PainelFichaCliente from './PainelFichaCliente';
+import BarraAcoesAtendenteChat from './BarraAcoesAtendenteChat';
+import CheckoutVendaModal from './CheckoutVendaModal';
 import './ModalVerAtendimentoInovador.css';
 
 export default function ModalVerAtendimentoInovador({
   chat,
+  modo = 'ver',
+  usuario,
+  contagemDelay = 0,
   onFechar,
   onAssumir,
+  onEnviarMensagem,
+  onEncerrar,
 }) {
+  const [modalCheckout, setModalCheckout] = useState(false);
   const fimListaRef = useRef(null);
 
   useEffect(() => {
     fimListaRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chat?.mensagens]);
+  }, [chat?.mensagens, contagemDelay]);
 
   if (!chat) return null;
 
   const ultimaMensagem = chat.mensagens[chat.mensagens.length - 1];
   const isOnline = chat.status === 'on';
+  const isModoAssumir = modo === 'assumir';
+
+  const handleVendaConcluida = (pedido) => {
+    setModalCheckout(false);
+    if (onEnviarMensagem) {
+      onEnviarMensagem(
+        `🎉 Pedido ${pedido.id} gerado e aprovado com sucesso! Total: R$ ${pedido.valorTotal}. Forma: ${pedido.formaPagamento?.toUpperCase() || 'PIX'}. Sua peça já está reservada!`
+      );
+    }
+  };
 
   return (
     <div
@@ -24,7 +43,7 @@ export default function ModalVerAtendimentoInovador({
       role="presentation"
     >
       <div className="modal-inovador-card" role="dialog" aria-modal="true">
-        {/* Header Inovador estilo Console de Concierge */}
+        {/* Header Inovador estilo Console de Concierge de Alta Costura */}
         <header className="modal-inovador-header">
           <div className="cliente-meta-topo">
             <div className="cliente-avatar-grande" aria-hidden="true">
@@ -50,20 +69,34 @@ export default function ModalVerAtendimentoInovador({
               <span>Conexão Simultânea (0ms)</span>
             </span>
 
-            <button
-              type="button"
-              className="btn-assumir-inovador"
-              onClick={() => onAssumir(chat)}
-            >
-              <span>⚡</span>
-              <span>Assumir Atendimento</span>
-            </button>
+            {!isModoAssumir && onAssumir && (
+              <button
+                type="button"
+                className="btn-assumir-inovador"
+                onClick={() => onAssumir(chat)}
+              >
+                <span>⚡</span>
+                <span>Assumir Atendimento</span>
+              </button>
+            )}
+
+            {isModoAssumir && onEncerrar && (
+              <button
+                type="button"
+                className="btn-encerrar-atendimento"
+                onClick={onEncerrar}
+                title="Encerrar atendimento humano e fechar card"
+              >
+                <span aria-hidden="true">🛑</span>
+                <span>Encerrar Atendimento</span>
+              </button>
+            )}
 
             <button
               type="button"
               className="checkout-btn-fechar"
               onClick={onFechar}
-              aria-label="Fechar visualização"
+              aria-label="Fechar painel"
             >
               ✕
             </button>
@@ -73,6 +106,16 @@ export default function ModalVerAtendimentoInovador({
         {/* Corpo com Duas Colunas: Timeline da Conversa + Painel da Cliente */}
         <div className="modal-inovador-corpo">
           <div className="coluna-chat-conversa">
+            {isModoAssumir && contagemDelay > 0 && (
+              <div className="banner-delay-5s" role="alert">
+                <span className="spinner-mini"></span>
+                <span>
+                  Direcionando atendimento para {usuario?.nome || 'Atendente'}... Apresentação em{' '}
+                  {contagemDelay} segundo(s).
+                </span>
+              </div>
+            )}
+
             <div className="lista-mensagens-inovadora">
               {chat.mensagens.map((msg, i) => (
                 <div key={i} className={`msg-item-modal msg-${msg.autor}`}>
@@ -85,55 +128,34 @@ export default function ModalVerAtendimentoInovador({
               <div ref={fimListaRef} />
             </div>
 
-            {/* Rodapé garantindo a exibição clara da ÚLTIMA INTERAÇÃO */}
-            <div className="rodape-monitor-status">
-              <span>
-                <strong>Última Interação:</strong> "{ultimaMensagem?.texto?.substring(0, 60)}..."
-              </span>
-              <span>{chat.mensagens.length} mensagens trocadas</span>
-            </div>
+            {isModoAssumir ? (
+              <BarraAcoesAtendenteChat
+                onEnviarMensagem={onEnviarMensagem}
+                onAbrirCheckout={() => setModalCheckout(true)}
+              />
+            ) : (
+              <div className="rodape-monitor-status">
+                <span>
+                  <strong>Última Interação:</strong> "{ultimaMensagem?.texto?.substring(0, 60)}..."
+                </span>
+                <span>{chat.mensagens.length} mensagens trocadas</span>
+              </div>
+            )}
           </div>
 
-          {/* Coluna de Contexto Inteligente da Cliente */}
-          <div className="coluna-contexto-cliente">
-            <div className="card-info-cliente-box">
-              <h4>📋 Ficha da Cliente</h4>
-              <div className="info-item-linha">
-                <span>Cliente:</span>
-                <strong>{chat.clienteNome}</strong>
-              </div>
-              <div className="info-item-linha">
-                <span>E-mail:</span>
-                <strong>{chat.clienteEmail}</strong>
-              </div>
-              <div className="info-item-linha">
-                <span>Canal:</span>
-                <strong>{chat.canal}</strong>
-              </div>
-              <div className="info-item-linha">
-                <span>Atendente:</span>
-                <strong>{chat.atendenteNome || 'Assistente Virtual'}</strong>
-              </div>
-            </div>
-
-            <div className="card-info-cliente-box">
-              <h4>📊 Diagnóstico Prisma BI</h4>
-              <div className="info-item-linha">
-                <span>Intenção Atual:</span>
-                <strong style={{ color: 'var(--color-primary)' }}>Consulta & Compra</strong>
-              </div>
-              <div className="info-item-linha">
-                <span>Propensão Compra:</span>
-                <strong style={{ color: '#15803d' }}>Alta (85%)</strong>
-              </div>
-              <div className="info-item-linha">
-                <span>Ticket Potencial:</span>
-                <strong>R$ 129,90</strong>
-              </div>
-            </div>
-          </div>
+          <PainelFichaCliente chat={chat} />
         </div>
       </div>
+
+      {modalCheckout && (
+        <CheckoutVendaModal
+          clienteNomePadrao={chat.clienteNome}
+          clienteEmailPadrao={chat.clienteEmail}
+          onFechar={() => setModalCheckout(false)}
+          onVendaConcluida={handleVendaConcluida}
+        />
+      )}
     </div>
   );
 }
+
