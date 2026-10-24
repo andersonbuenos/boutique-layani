@@ -5,16 +5,20 @@ export const chatRouter = Router();
 
 // POST /api/chat - Atendimento virtual determinístico (SEM IA)
 chatRouter.post('/', (req, res) => {
-  const { mensagem } = req.body || {};
+  const { mensagem, sessionId } = req.body || {};
 
-  const resultado = processarAtendimento(mensagem);
+  const resultado = processarAtendimento(mensagem, sessionId);
 
   return res.json({
     autor: 'assistente',
     texto: resultado.resposta,
     intencao: resultado.intencao,
+    produto: resultado.produto || null,
+    tamanho: resultado.tamanho || null,
+    totalEstimado: resultado.totalEstimado || null,
     encaminhadoHumano: resultado.encaminhadoHumano,
     linkWhatsapp: resultado.linkWhatsapp,
     dataHora: new Date().toISOString(),
   });
 });
+

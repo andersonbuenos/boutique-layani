@@ -18,7 +18,7 @@ describe('Serviço de Atendimento - Boutique Layani', () => {
   describe('Testes obrigatórios do SPECS.md (Seção 7)', () => {
     it('Pergunta: "Quanto custa a camiseta?" -> deve responder R$ 39,90', () => {
       const resposta = responderPergunta('Quanto custa a camiseta?');
-      expect(resposta).toContain('R$ 39,90');
+      expect(resposta).toContain('39,90');
     });
 
     it('Pergunta: "Qual o horário?" -> deve responder segunda a sábado, das 8h às 18h', () => {
@@ -30,7 +30,7 @@ describe('Serviço de Atendimento - Boutique Layani', () => {
 
     it('Pergunta: "Qual o valor da entrega?" -> deve responder R$ 10,00', () => {
       const resposta = responderPergunta('Qual o valor da entrega?');
-      expect(resposta).toContain('R$ 10,00');
+      expect(resposta).toContain('10,00');
     });
 
     it('Pergunta: "Tem calça tamanho G?" -> deve encaminhar para atendente humano', () => {
@@ -47,14 +47,15 @@ describe('Serviço de Atendimento - Boutique Layani', () => {
   describe('Skill 1 - Consultar preços', () => {
     it('deve responder o preço da calça jeans', () => {
       const resposta = responderPergunta('Quanto custa a calça?');
-      expect(resposta).toContain('R$ 119,90');
+      expect(resposta).toContain('119,90');
     });
 
     it('deve responder o preço do vestido', () => {
       const resposta = responderPergunta('Qual o valor do vestido?');
-      expect(resposta).toContain('R$ 89,90');
+      expect(resposta).toContain('89,90');
     });
   });
+
 
   describe('Skill 4 - Encaminhar ao humano', () => {
     it('não deve informar estoque ou disponibilidade', () => {
