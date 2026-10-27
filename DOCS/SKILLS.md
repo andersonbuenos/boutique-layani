@@ -56,3 +56,12 @@ Descrever as habilidades de atendimento do assistente virtual autônomo (SEM IA)
 - **Saída:** Remoção automática do card da lista ativa e envio de mensagem de agradecimento:
   *"Atendimento com nossa especialista finalizado com muito carinho! Agradecemos por escolher a Boutique Layani. Se precisar de mais alguma coisa ou quiser tirar novas dúvidas, estou sempre por aqui à sua disposição. Tenha um dia maravilhoso e repleto de elegância! ✨🌸"*
 
+
+## Skill 11 — Assistente Groq AI com Guardrails & Cortesia
+- **Objetivo:** Oferecer consultoria conversacional de alta autonomia sobre moda, estilo, ocasiões e figurinos de K-Drama com o modelo `qwen/qwen3.8-27b` via Groq Cloud API.
+- **Guardrail 1 (Domínio Estrito):** Responde exclusivamente sobre a Boutique Layani, moda feminina, tecidos e catálogo.
+- **Guardrail 2 (Bloqueio Categórico):** Recusa com delicadeza e charme perguntas sobre política, guerras, geopolítica e notícias gerais.
+- **Guardrail 3 (Blindagem Anti-Leakage):** Proteção em dupla camada impedindo menção ou vazamento de dados de usuários `admin`/`atendente`, tokens JWT e chaves de API (`GROQ_API_KEY`).
+- **Guardrail 4 (Cortesia e Carisma):** Tom acolhedor de concierge de alta costura com vocabulário empático e refinado.
+- **Resiliência (Fallback Automático):** Em caso de ausência de chave ou falha de conectividade, ativa o motor determinístico oficial sem interrupção de serviço.
+

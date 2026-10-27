@@ -23,14 +23,24 @@ ON DUPLICATE KEY UPDATE `nome` = VALUES(`nome`);
 INSERT INTO `produtos` (`id`, `sku`, `nome`, `categoria_id`, `preco_venda`, `custo_unitario`, `tamanho_padrao`, `vibe_dorama`, `descricao_dorama`) VALUES
 (1, 'LAY-CAM-001', 'Camiseta Algodão Egípcio', 1, 39.90, 18.00, 'Grade P / M / G', 'Protagonista de Comédia Romântica', 'Inspirada no estilo casual e irresistível das protagonistas de k-dramas em Seul. O visual perfeito para aquele encontro despretensioso em uma cafeteria fofa com o herdeiro chaebol disfarçado. Confortável, versátil e cheia de charme natural!'),
 (2, 'LAY-CAL-002', 'Calça Jeans Skinny Flare', 1, 119.90, 55.00, 'Grade 36 a 44', 'Estilo Urbano de Gangnam', 'A clássica calça jeans com caimento impecável, digna das cenas de correria romântica sob o guarda-chuva amarelo ou do dia a dia da mocinha batalhadora que conquista todos pela sua determinação. Uma peça coringa que rouba a cena em qualquer episódio!'),
-(3, 'LAY-VES-003', 'Vestido Fluido Midi Dorama', 1, 89.90, 38.00, 'Grade P / M', 'Cena em Câmera Lenta com Trilha Sonora', 'Aquele look marcante do momento em que o vento sopra suavemente e a trilha sonora romântica toca ao fundo. Fluido, delicado e encantador, é perfeito para o grande baile de gala ou para aquele reencontro inesperado sob as cerejeiras em flor!')
+(3, 'LAY-VES-003', 'Vestido Fluido Midi Dorama', 1, 89.90, 38.00, 'Grade P / M', 'Cena em Câmera Lenta com Trilha Sonora', 'Aquele look marcante do momento em que o vento sopra suavemente e a trilha sonora romântica toca ao fundo. Fluido, delicado e encantador, é perfeito para o grande baile de gala ou para aquele reencontro inesperado sob as cerejeiras em flor!'),
+(4, 'LAY-BLA-004', 'Blazer Alfaiataria Seul', 1, 189.90, 85.00, 'Grade P / M / G', 'Herdeira Chaebol & CEO Empoderada', 'Corte de alfaiataria impecável estruturado com linho misto nobre ideal para o clima brasileiro. Ombreiras discretas e botões perolados que transmitem elegância e poder refinado.'),
+(5, 'LAY-SED-005', 'Blusa de Seda Gola Laço Gangnam', 1, 98.90, 42.00, 'Grade P / M / G', 'Romance Delicado no Escritório', 'Seda acetinada com toque suave na pele e gola com laço clássico removível. O equilíbrio perfeito entre a delicadeza romântica coreana e o caimento sensual elegante brasileiro.'),
+(6, 'LAY-SAI-006', 'Saia Midi Plissada Hanbok Chic', 1, 109.90, 48.00, 'Grade P / M / G', 'Passeio Romântico ao Entardecer', 'Inspirada na silhueta do Hanbok combinada à alfaiataria contemporânea. O plissado perfeito confere movimento hipnotizante ao caminhar com cintura alta modeladora.'),
+(7, 'LAY-TWE-007', 'Conjunto Tweed Chaebol Elegance', 1, 229.90, 105.00, 'Grade P / M', 'Jantar de Gala e Família Tradicional', 'Tweed clássico texturizado com fios dourados sutis e forro acetinado. Casaqueto refinado e saia estruturada, exalando a sofisticação da alta sociedade de Seul.'),
+(8, 'LAY-MAC-008', 'Macacão Pantalona Seda Hongdae', 1, 169.90, 75.00, 'Grade P / M / G', 'Estreia de Tapete Vermelho', 'Linhas alongadoras em crepe de seda fluido com decote suave em V e faixa acinturada. União do estilo vanguardista de Hongdae com a exuberância feminina brasileira.')
 ON DUPLICATE KEY UPDATE `preco_venda` = VALUES(`preco_venda`);
 
 -- 4. SEED DE ESTOQUE
 INSERT INTO `estoque` (`id`, `produto_id`, `quantidade`, `estoque_minimo`, `status`, `ultima_entrada`) VALUES
 (1, 1, 45, 15, 'Em estoque', '2026-10-15'),
 (2, 2, 28, 10, 'Em estoque', '2026-10-12'),
-(3, 3, 8, 12, 'Estoque baixo', '2026-10-05')
+(3, 3, 8, 12, 'Estoque baixo', '2026-10-05'),
+(4, 4, 16, 8, 'Em estoque', '2026-10-20'),
+(5, 5, 22, 10, 'Em estoque', '2026-10-18'),
+(6, 6, 19, 8, 'Em estoque', '2026-10-19'),
+(7, 7, 12, 6, 'Em estoque', '2026-10-21'),
+(8, 8, 14, 6, 'Em estoque', '2026-10-22')
 ON DUPLICATE KEY UPDATE `quantidade` = VALUES(`quantidade`);
 
 -- 5. SEED DE VENDEDORES

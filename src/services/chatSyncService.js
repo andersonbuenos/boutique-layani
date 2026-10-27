@@ -31,7 +31,7 @@ export function salvarSessoes(sessoes) {
   } catch {}
 }
 
-export function registrarMensagemCliente(usuario, textoCliente, textoResposta) {
+export function registrarMensagemCliente(usuario, textoCliente, textoResposta, dadosExtras = {}) {
   const sessoes = carregarSessoes();
   const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
@@ -69,12 +69,23 @@ export function registrarMensagemCliente(usuario, textoCliente, textoResposta) {
     dataHora: hora,
   };
 
+  // Se houver intenção de fechamento de venda ou encaminhamento, direciona para o atendente
+  const isDirecionamento =
+    dadosExtras?.encaminhadoHumano ||
+    dadosExtras?.intencao === 'FECHAMENTO_VENDA_DIRECIONADO' ||
+    /\b(direcionando|atendente na central|comprovação do pagamento)\b/i.test(textoResposta);
+
+  const statusAtendimentoAtual = isDirecionamento ? 'direcionando' : 'bot';
+
   if (index >= 0) {
     // Atualiza sessão existente e coloca no topo como ON
     const sessaoAtual = sessoes[index];
     const sessaoAtualizada = {
       ...sessaoAtual,
       status: 'on',
+      atendimentoStatus: isDirecionamento ? 'direcionando' : sessaoAtual.atendimentoStatus || 'bot',
+      itensPedido: dadosExtras?.itens || sessaoAtual.itensPedido || null,
+      valorTotal: dadosExtras?.totalEstimado || sessaoAtual.valorTotal || null,
       ultimaMensagem: textoCliente,
       mensagens: [...sessaoAtual.mensagens, msgCli, msgAst],
     };
@@ -89,8 +100,10 @@ export function registrarMensagemCliente(usuario, textoCliente, textoResposta) {
       clienteEmail,
       canal: 'Chat Virtual da Loja',
       status: 'on', // Alert dot ativo!
-      atendimentoStatus: 'bot',
+      atendimentoStatus: statusAtendimentoAtual,
       atendenteNome: null,
+      itensPedido: dadosExtras?.itens || null,
+      valorTotal: dadosExtras?.totalEstimado || null,
       ultimaMensagem: textoCliente,
       mensagens: [
         {
@@ -119,6 +132,9 @@ export function registrarMensagemCliente(usuario, textoCliente, textoResposta) {
         clienteEmail,
         textoCliente,
         textoResposta,
+        itensPedido: dadosExtras?.itens || null,
+        valorTotal: dadosExtras?.totalEstimado || null,
+        atendimentoStatus: statusAtendimentoAtual,
       }),
     }).catch(() => {});
   } catch {}

@@ -1,0 +1,337 @@
+/* Showcase / Slide Promocional da Boutique Layani — Especialista Nova */
+.showcase-promocional-section {
+  width: 100%;
+  max-width: 1140px;
+  margin: 1.5rem auto 2.5rem;
+  padding: 0 1rem;
+}
+
+.showcase-card {
+  position: relative;
+  background: linear-gradient(135deg, #ffffff 0%, #fdf2f8 50%, #fff1f2 100%);
+  border: 1.5px solid #fad5df;
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: 0 12px 36px -8px rgba(157, 23, 77, 0.12);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  min-height: 420px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.showcase-card:hover {
+  box-shadow: 0 18px 42px -6px rgba(157, 23, 77, 0.18);
+}
+
+.showcase-info-bloco {
+  flex: 1 1 55%;
+  padding: 2.2rem 2.8rem 3.2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.8rem;
+  z-index: 2;
+}
+
+.showcase-topo-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.showcase-badge-destaque {
+  background: linear-gradient(135deg, #9d174d 0%, #be185d 100%);
+  color: #ffffff;
+  padding: 0.3rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 3px 10px rgba(157, 23, 77, 0.25);
+}
+
+.showcase-tag-colecao {
+  background: #ffffff;
+  border: 1px solid #fbcfe8;
+  color: #be185d;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.showcase-titulo {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1e293b;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.showcase-subtitulo {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #9d174d;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.showcase-destaque-desc {
+  font-size: 0.92rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 480px;
+}
+
+.showcase-preco-bloco {
+  background: #ffffff;
+  border: 1px solid #fce7f3;
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: fit-content;
+  box-shadow: 0 2px 8px rgba(157, 23, 77, 0.05);
+}
+
+.showcase-preco-rotulo {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.showcase-preco-valor {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.showcase-preco-cifrao {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #9d174d;
+}
+
+.showcase-preco-valor strong {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #9d174d;
+  letter-spacing: -0.02em;
+}
+
+.showcase-parcela {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin-left: 0.3rem;
+}
+
+.showcase-acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.btn-showcase-primario {
+  background: linear-gradient(135deg, #be185d 0%, #9d174d 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  padding: 0.7rem 1.3rem;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 14px rgba(157, 23, 77, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-showcase-primario:hover {
+  background: linear-gradient(135deg, #9d174d 0%, #831843 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(157, 23, 77, 0.4);
+}
+
+.btn-showcase-chat {
+  background: #ffffff;
+  color: #9d174d;
+  border: 1.5px solid #fbcfe8;
+  border-radius: 30px;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all 0.2s ease;
+}
+
+.btn-showcase-chat:hover {
+  background: #fdf2f8;
+  border-color: #9d174d;
+  transform: translateY(-2px);
+}
+
+.showcase-imagem-bloco {
+  flex: 1 1 45%;
+  height: 420px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fdf2f8;
+}
+
+.showcase-foto-destaque {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.5s ease;
+}
+
+.animar-slide-imagem {
+  animation: slideFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideFadeIn {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.96) translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.showcase-imagem-bloco:hover .showcase-foto-destaque {
+  transform: scale(1.05);
+}
+
+.showcase-overlay-zoom {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: rgba(43, 15, 26, 0.7);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.showcase-imagem-bloco:hover .showcase-overlay-zoom {
+  opacity: 1;
+}
+
+.btn-nav-slide {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid #fad5df;
+  color: #9d174d;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(157, 23, 77, 0.15);
+  transition: all 0.2s ease;
+}
+
+.btn-nav-anterior {
+  left: 0.75rem;
+}
+
+.btn-nav-proximo {
+  right: 0.75rem;
+}
+
+.btn-nav-slide:hover {
+  background: #be185d;
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 16px rgba(157, 23, 77, 0.3);
+}
+
+.showcase-dots-container {
+  position: absolute;
+  bottom: 1rem;
+  left: 2.5rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.dot-indicador {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #fbcfe8;
+  background: #ffffff;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.dot-indicador.ativo {
+  width: 32px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #be185d 0%, #9d174d 100%);
+  border-color: #9d174d;
+  box-shadow: 0 2px 6px rgba(157, 23, 77, 0.3);
+}
+
+@media (max-width: 860px) {
+  .showcase-card {
+    flex-direction: column-reverse;
+    min-height: auto;
+  }
+
+  .showcase-imagem-bloco {
+    width: 100%;
+    height: 300px;
+  }
+
+  .showcase-info-bloco {
+    padding: 1.5rem 1.25rem 2.5rem;
+    width: 100%;
+  }
+
+  .showcase-titulo {
+    font-size: 1.6rem;
+  }
+
+  .showcase-dots-container {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0.75rem;
+  }
+}
+

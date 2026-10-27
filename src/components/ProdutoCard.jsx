@@ -56,8 +56,15 @@ export default function ProdutoCard({ produto, onConsultarPreco, onAbrirModal })
       </div>
 
       <div className="produto-info">
-        <span className="produto-categoria">{produto.categoria}</span>
-        <h3 className="produto-nome">{produto.nome}</h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+          <span className="produto-categoria">{produto.categoria}</span>
+          {produto.vibeDorama && (
+            <span style={{ fontSize: '0.72rem', color: '#be185d', fontWeight: 700, background: '#fdf2f8', padding: '0.15rem 0.5rem', borderRadius: '12px' }}>
+              ✨ {produto.vibeDorama.split('&')[0].trim()}
+            </span>
+          )}
+        </div>
+        <h3 className="produto-nome">{produto.nomeCompleto || produto.nome}</h3>
 
         <div className="produto-preco-bloco">
           <span className="preco-rotulo">Valor fixo</span>

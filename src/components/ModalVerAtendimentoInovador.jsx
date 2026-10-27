@@ -137,6 +137,7 @@ export default function ModalVerAtendimentoInovador({
 
       {modalCheckout && (
         <CheckoutVendaModal
+          chat={chat}
           clienteNomePadrao={chat.clienteNome}
           clienteEmailPadrao={chat.clienteEmail}
           onFechar={() => setModalCheckout(false)}

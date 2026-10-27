@@ -12,12 +12,13 @@ import Catalogo from './components/Catalogo';
 import Atendimento from './components/Atendimento';
 import Footer from './components/Footer';
 import ModalProduto from './components/ModalProduto';
+import SlideShowcasePromocional from './components/SlideShowcasePromocional';
 import {
   MENSAGEM_BOAS_VINDAS,
   LOJA,
   formatarPreco,
 } from './data/boutiqueData';
-import { responderPergunta } from './services/atendenteService';
+import { responderPergunta, responderPerguntaAsync, consultarAssistenteCompletoAsync } from './services/atendenteService';
 import { loginUsuario } from './services/authService';
 import { registrarMensagemCliente } from './services/chatSyncService';
 import { escutarEventosChat } from './services/liveChatBroadcast';
@@ -135,7 +136,7 @@ export default function App() {
 
 
 
-  const handleEnviarMensagem = (textoPergunta) => {
+  const handleEnviarMensagem = async (textoPergunta) => {
     const textoLimpo = textoPergunta.trim();
     if (!textoLimpo || isDigitando) return;
 
@@ -150,8 +151,11 @@ export default function App() {
     setMensagens((prev) => [...prev, mensagemCliente]);
     setIsDigitando(true);
 
-    timerRef.current = setTimeout(() => {
-      const textoResposta = responderPergunta(textoLimpo);
+    try {
+      const sessionId = usuario ? `user-${usuario.id}` : 'cliente-web';
+      const respostaCompleta = await consultarAssistenteCompletoAsync(textoLimpo, sessionId, mensagens);
+      const textoResposta = respostaCompleta?.texto || 'Olá! Como posso ajudar você hoje?';
+
       const mensagemAssistente = {
         id: `ast-${Date.now() + 1}`,
         autor: 'assistente',
@@ -164,8 +168,26 @@ export default function App() {
 
       // Registra a mensagem na Central de Atendimentos:
       // se for um cliente novo, cria um NOVO CARD no topo com alert dot pulsante!
-      registrarMensagemCliente(usuario, textoLimpo, textoResposta);
-    }, 450);
+      // se houver intenção de compra ou encaminhamento, direciona com as peças conectadas!
+      registrarMensagemCliente(usuario, textoLimpo, textoResposta, {
+        itens: respostaCompleta?.itens,
+        totalEstimado: respostaCompleta?.totalEstimado,
+        encaminhadoHumano: respostaCompleta?.encaminhadoHumano,
+        intencao: respostaCompleta?.intencao,
+      });
+    } catch {
+      const textoFallback = responderPergunta(textoLimpo);
+      const mensagemAssistente = {
+        id: `ast-${Date.now() + 1}`,
+        autor: 'assistente',
+        texto: textoFallback,
+        dataHora: new Date().toISOString(),
+      };
+
+      setMensagens((prev) => [...prev, mensagemAssistente]);
+      setIsDigitando(false);
+      registrarMensagemCliente(usuario, textoLimpo, textoFallback);
+    }
   };
 
 
@@ -244,6 +266,10 @@ export default function App() {
               </div>
             </aside>
 
+            <SlideShowcasePromocional
+              onAbrirModal={(produto) => setProdutoModal(produto)}
+              onConsultarNoChat={handleConsultarPrecoCatalogo}
+            />
 
             <Catalogo
               onConsultarPreco={handleConsultarPrecoCatalogo}

@@ -8,7 +8,9 @@ ENV NODE_ENV=production
 COPY package*.json ./
 RUN npm install --omit=dev --no-audit --no-fund
 
-# Copia a aplicação compilada e os módulos de backend
+# Copia a aplicação compilada e os módulos de backend (Build v2.6 Novas Roupas e Slides)
+ARG BUILD_ID=20261026-v2.6
+RUN echo "Building version $BUILD_ID"
 COPY dist ./dist
 COPY server ./server
 

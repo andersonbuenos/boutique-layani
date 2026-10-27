@@ -45,7 +45,7 @@ export default function Atendimento({
         <header className="chat-header">
           <div className="chat-title-group">
             <h2 id="chat-titulo" className="chat-title">
-              <span>Concierge Boutique Layani</span>
+              <span>Assistente Virtual Boutique Layani</span>
             </h2>
             <p className="chat-status">
               <span className="status-indicator" aria-hidden="true"></span>
@@ -78,7 +78,7 @@ export default function Atendimento({
             ))}
 
             {isDigitando && (
-              <li className="mensagem-digitando" aria-label="Concierge está digitando">
+              <li className="mensagem-digitando" aria-label="Assistente Virtual está digitando">
                 <div className="mensagem-avatar" aria-hidden="true">
                   L
                 </div>

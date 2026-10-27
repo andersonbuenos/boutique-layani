@@ -135,6 +135,7 @@ export default function ModalAtendimentoAssumido({
 
       {modalCheckout && (
         <CheckoutVendaModal
+          chat={chat}
           clienteNomePadrao={chat.clienteNome}
           clienteEmailPadrao={chat.clienteEmail}
           onFechar={() => setModalCheckout(false)}

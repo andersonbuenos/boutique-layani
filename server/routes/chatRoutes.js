@@ -1,24 +1,27 @@
 import { Router } from 'express';
-import { processarAtendimento } from '../services/chatEngine.js';
+import { processarMensagemAssistente } from '../services/groqService.js';
 
 export const chatRouter = Router();
 
-// POST /api/chat - Atendimento virtual determinístico (SEM IA)
-chatRouter.post('/', (req, res) => {
-  const { mensagem, sessionId } = req.body || {};
+// POST /api/chat - Atendimento virtual com Groq AI & Fallback Resiliente
+chatRouter.post('/', async (req, res) => {
+  try {
+    const { mensagem, sessionId, historico } = req.body || {};
 
-  const resultado = processarAtendimento(mensagem, sessionId);
+    const resultado = await processarMensagemAssistente({
+      mensagem,
+      sessionId,
+      historico,
+    });
 
-  return res.json({
-    autor: 'assistente',
-    texto: resultado.resposta,
-    intencao: resultado.intencao,
-    produto: resultado.produto || null,
-    tamanho: resultado.tamanho || null,
-    totalEstimado: resultado.totalEstimado || null,
-    encaminhadoHumano: resultado.encaminhadoHumano,
-    linkWhatsapp: resultado.linkWhatsapp,
-    dataHora: new Date().toISOString(),
-  });
+    return res.json(resultado);
+  } catch (error) {
+    return res.status(500).json({
+      autor: 'assistente',
+      texto: 'Olá! Tive um pequeno instante de instabilidade, mas estou pronta para te atender. O que gostaria de saber sobre nossas peças?',
+      erro: error.message,
+    });
+  }
 });
+
 

@@ -42,6 +42,8 @@ services:
       DB_PASSWORD: layani_pass_2026
       DB_NAME: boutique_layani
       JWT_SECRET: boutique_layani_secret_key_2026_super_secure
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GROQ_MODEL: ${GROQ_MODEL:-qwen/qwen3.8-27b}
     depends_on:
       mysql:
         condition: service_healthy
